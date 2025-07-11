@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_pemeriksaans', function (Blueprint $table) {
+        Schema::create('jadwal_pemeriksaan', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
             $table->unsignedBigInteger('kelas_id');
-            $table->unsignedBigInteger('petugas_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('keterangan');
-            $table->foreign('kelas_id')->references('id')->on('kelas');
-            $table->foreign('petugas_id')->references('id')->on('petugas');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('petugas')->onDelete('cascade');
 
             $table->timestamps();
         });

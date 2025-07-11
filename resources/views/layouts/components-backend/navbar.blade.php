@@ -84,41 +84,44 @@
                          </li>
                      </ul>
                  </li>
-                 <li class="user-profile header-notification">
-                     <a href="#!" class="waves-effect waves-light">
-                         <img src="{{ asset('assets/backend/images/avatar-4.jpg') }}" class="img-radius"
-                             alt="User-Profile-Image">
-                         <span>John Doe</span>
-                         <i class="ti-angle-down"></i>
-                     </a>
-                     <ul class="show-notification profile-notification">
-                         <li class="waves-effect waves-light">
-                             <a href="#!">
-                                 <i class="ti-settings"></i> Settings
-                             </a>
-                         </li>
-                         <li class="waves-effect waves-light">
-                             <a href="user-profile.html">
-                                 <i class="ti-user"></i> Profile
-                             </a>
-                         </li>
-                         <li class="waves-effect waves-light">
-                             <a href="email-inbox.html">
-                                 <i class="ti-email"></i> My Messages
-                             </a>
-                         </li>
-                         <li class="waves-effect waves-light">
-                             <a href="auth-lock-screen.html">
-                                 <i class="ti-lock"></i> Lock Screen
-                             </a>
-                         </li>
-                         <li class="waves-effect waves-light">
-                             <a href="auth-normal-sign-in.html">
-                                 <i class="ti-layout-sidebar-left"></i> Logout
-                             </a>
-                         </li>
-                     </ul>
-                 </li>
+                 @if (Auth::check())
+                     <li class="user-profile header-notification">
+                         <a href="#!" class="waves-effect waves-light">
+                             <img src="{{ asset('assets/backend/images/avatar-4.jpg') }}" class="img-radius"
+                                 alt="User-Profile-Image">
+                             <span>{{ Auth::user()->name }}</span>
+                             <i class="ti-angle-down"></i>
+                         </a>
+                         <ul class="show-notification profile-notification">
+                             <li class="waves-effect waves-light">
+                                 <span> {{ Auth::user()->role }} </span>
+                             </li>
+                     </li>
+                     <li class="waves-effect waves-light">
+                         <a href="user-profile.html">
+                             <i class="ti-user"></i> Profile
+                         </a>
+                     </li>
+                     <li class="waves-effect waves-light">
+                         <a href="email-inbox.html">
+                             <i class="ti-email"></i> My Messages
+                         </a>
+                     </li>
+                     <li class="waves-effect waves-light">
+                         <a href="{{ route('logout') }}"
+                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                             class="border-0 bg-transparent text-primary ms-auto" tabindex="0" type="a"
+                             aria-label="logout" data-bs-toggle="tooltip" data-bs-placement="top"
+                             data-bs-title="logout">
+                             <i class="ti-layout-sidebar-left"></i> Logout
+
+                             <form action="{{ route('logout') }}" method="post" id="logout-form">
+                                 @csrf
+                             </form>
+                     </li>
+             </ul>
+             </li>
+             @endif
              </ul>
          </div>
      </div>
