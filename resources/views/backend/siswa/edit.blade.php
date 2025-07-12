@@ -11,21 +11,17 @@
                             @csrf
                             @method('PUT')
 
-                            {{-- Nama User --}}
+                            {{-- Nama --}}
                             <div class="mb-3">
-                                <label for="user_id">Nama</label>
-                                <select name="user_id" class="form-control">
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ old('user_id', $siswa->user_id) == $user->id ? 'selected' : '' }}>
-                                            {{ $user->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
+                                <label for="nama">Nama</label>
+                                <input type="text" name="nama"
+                                    class="form-control @error('nama') is-invalid @enderror"
+                                    value="{{ old('nama', $siswa->nama) }}">
+                                @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
 
                             {{-- Kelas --}}
                             <div class="mb-3">

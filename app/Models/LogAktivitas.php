@@ -14,7 +14,6 @@ class LogAktivitas extends Model
         'user_id',
         'aksi',
         'tabel',
-        'data_id',
     ];
 
     // Relasi ke petugas yang melakukan aksi

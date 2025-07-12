@@ -23,12 +23,16 @@ class SiswaController extends Controller
     {
         $kelas = Kelas::all();
         return view('backend.siswa.create', compact('kelas'));
-
     }
 
     public function store(Request $request)
     {
-        // Validasi dan simpan siswa
+        $request->validate([
+            'nama'          => 'required|string',
+            'kelas_id'      => 'required|exists:kelas,id',
+            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+        ]);
+
         $siswa = Siswa::create([
             'nama'          => $request->nama,
             'kelas_id'      => $request->kelas_id,
@@ -36,12 +40,7 @@ class SiswaController extends Controller
             'user_id'       => auth()->id(),
         ]);
 
-        // Logging aktivitas
-        LogAktivitas::create([
-            'user_id' => auth()->id(),
-            'aksi'    => "Menambahkan siswa bernama {$siswa->nama}",
-            'tabel'   => 'siswa',
-        ]);
+        logAktivitas("Menambahkan siswa bernama {$siswa->nama}", 'siswa');
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
@@ -50,7 +49,6 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::with('kelas')->findOrFail($id);
         return view('backend.siswa.show', compact('siswa'));
-
     }
 
     public function edit($id)
@@ -59,7 +57,6 @@ class SiswaController extends Controller
         $kelas = Kelas::all();
 
         return view('backend.siswa.edit', compact('siswa', 'kelas'));
-
     }
 
     public function update(Request $request, $id)
@@ -70,14 +67,15 @@ class SiswaController extends Controller
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
         ]);
 
-        $siswa = Siswa::findOrFail($id); // <-- Tambahkan ini
+        $siswa = Siswa::findOrFail($id);
 
         $siswa->update([
             'nama'          => $request->nama,
             'kelas_id'      => $request->kelas_id,
             'jenis_kelamin' => $request->jenis_kelamin,
         ]);
-        logAktivitas("Mengedit data siswa bernama {$siswa->nama}", 'siswa', $siswa->id);
+
+        logAktivitas("Mengedit data siswa bernama {$siswa->nama}", 'siswa');
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil diperbarui');
     }
@@ -86,14 +84,14 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
 
-                                         // Hapus semua rekam medis yang terkait
-        $siswa->rekam_medis()->delete(); // Pastikan relasinya ada
-
+        $siswa->rekam_medis()->delete();
         $siswa->delete();
-        logAktivitas("Menghapus siswa bernama {$siswa->nama}", 'siswa', $siswa->id);
+
+        logAktivitas("Menghapus siswa bernama {$siswa->nama}", 'siswa');
 
         return redirect()->route('siswa.index')->with('success', 'Siswa dan data terkait berhasil dihapus');
     }
+
     public function search(Request $request)
     {
         $keyword = $request->keyword;
@@ -121,18 +119,17 @@ class SiswaController extends Controller
 
         return response()->json(['data' => $view]);
     }
-
 }
 
+// Helper logAktivitas tanpa data_id
 if (! function_exists('logAktivitas')) {
-    function logAktivitas($aksi, $tabel = null, $data_id = null)
+    function logAktivitas($aksi, $tabel = null)
     {
         if (auth()->check()) {
             LogAktivitas::create([
-                'user_id' => auth()->id(), // Ganti petugas_id jadi user_id
+                'user_id' => auth()->id(),
                 'aksi'    => $aksi,
                 'tabel'   => $tabel,
-                'data_id' => $data_id,
             ]);
         }
     }

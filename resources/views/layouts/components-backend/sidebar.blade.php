@@ -6,28 +6,11 @@
                  <img class="img-80 img-radius" src="{{ asset('assets/backend/images/avatar-4.jpg') }}"
                      alt="User-Profile-Image">
                  <div class="user-details">
-                     <span id="more-details">John Doe<i class="fa fa-caret-down"></i></span>
+                     <span>{{ Auth::user()->name }}</span>
                  </div>
              </div>
-             <div class="main-menu-content">
-                 <ul>
-                     <li class="more-details">
-                         <a href="user-profile.html"><i class="ti-user"></i>View Profile</a>
-                         <a href="#!"><i class="ti-settings"></i>Settings</a>
+         </div>
 
-                 </ul>
-             </div>
-         </div>
-         <div class="p-15 p-b-0">
-             <form class="form-material">
-                 <div class="form-group form-primary">
-                     <input type="text" name="footer-email" class="form-control">
-                     <span class="form-bar"></span>
-                     <label class="float-label"><i class="fa fa-search m-r-10"></i>Search
-                         Friend</label>
-                 </div>
-             </form>
-         </div>
          <div class="pcoded-navigation-label">Navigation</div>
          <ul class="pcoded-item pcoded-left-item">
              <li class="active">
@@ -39,7 +22,7 @@
                  </a>
              </li>
          </ul>
-         <div class="pcoded-navigation-label">Forms</div>
+         <div class="pcoded-navigation-label">Tables</div>
          <ul class="pcoded-item pcoded-left-item">
 
 
@@ -88,34 +71,35 @@
                      <span class="pcoded-mcaret"></span>
                  </a>
              </li>
-             <li class="">
-                 <a href="{{ route('rekam_medis.laporan') }}" class="waves-effect waves-dark">
-                     <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
-                     <span class="pcoded-mtext">Laporan Kunjungan </span>
-                     <span class="pcoded-mcaret"></span>
-                 </a>
-             </li>
-             <li class="">
-                 <a href="{{ route('jadwal_pemeriksaan.laporan') }}" class="waves-effect waves-dark">
-                     <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
-                     <span class="pcoded-mtext">Laporan Jadwal </span>
-                     <span class="pcoded-mcaret"></span>
-                 </a>
-             </li>
-             @if (auth()->user()->role === 'admin')
+             <div class="pcoded-navigation-label">Laporan</div>
+             <ul class="pcoded-item pcoded-left-item">
                  <li class="">
-                     <a href="{{ route('log.index') }}" class="waves-effect waves-dark">
+                     <a href="{{ route('rekam_medis.laporan') }}" class="waves-effect waves-dark">
                          <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
-                         <span class="pcoded-mtext">Log Aktivitas </span>
+                         <span class="pcoded-mtext">Laporan Kunjungan </span>
                          <span class="pcoded-mcaret"></span>
                      </a>
                  </li>
-             @endif
-
-
-
-
-
+                 <li class="">
+                     <a href="{{ route('jadwal_pemeriksaan.laporan') }}" class="waves-effect waves-dark">
+                         <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
+                         <span class="pcoded-mtext">Laporan Jadwal </span>
+                         <span class="pcoded-mcaret"></span>
+                     </a>
+                 </li>
+             </ul>
+             <div class="pcoded-navigation-label">Log Aktivitas</div>
+             <ul class="pcoded-item pcoded-left-item">
+                 @if (auth()->user()->role === 'admin')
+                     <li class="">
+                         <a href="{{ route('log.index') }}" class="waves-effect waves-dark">
+                             <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
+                             <span class="pcoded-mtext">Log Aktivitas </span>
+                             <span class="pcoded-mcaret"></span>
+                         </a>
+                     </li>
+                 @endif
+             </ul>
          </ul>
      </div>
  </nav>

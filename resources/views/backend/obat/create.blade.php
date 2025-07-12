@@ -55,6 +55,15 @@
                                 <button type="reset" class="btn btn-sm btn-outline-warning">Reset</button>
                             </div>
                         </form>
+
+                        <script>
+                            document.querySelector('form').addEventListener('submit', function(e) {
+                                const btn = e.target.querySelector('button[type="submit"]');
+                                btn.disabled = true;
+                                btn.innerText = 'Menyimpan...';
+                            });
+                        </script>
+
                     </div>
                 </div>
             </div>

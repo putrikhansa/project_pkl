@@ -8,7 +8,7 @@
         <div class="container position-relative">
 
             <div class="welcome position-relative" data-aos="fade-down" data-aos-delay="100">
-                <h2>WELCOME TO MEDILAB</h2>
+                <h2>WELCOME TO SISEHAT</h2>
                 <p>We are team of talented designers making websites with Bootstrap</p>
             </div><!-- End Welcome -->
 

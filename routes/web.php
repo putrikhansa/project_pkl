@@ -23,7 +23,7 @@ Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('lo
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth']) // opsional
+    ->middleware(['auth'])
     ->name('dashboard');
 
 Route::get('/laporan/jadwal-pemeriksaan', [JadwalPemeriksaanController::class, 'laporan'])
@@ -45,9 +45,8 @@ Route::get('/rekam-medis/export/pdf', function (\Illuminate\Http\Request $reques
     return $pdf->download('laporan-rekam-medis.pdf');
 })->name('rekam_medis.export.pdf');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/welcome', 'welcome')->name('welcome');
+
 
 Auth::routes();
 
@@ -56,7 +55,7 @@ Route::get('/home', [HomeController::class, 'index'])
     ->name('home');
 
 //  Admin Dashboard
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 Route::get('/petugas', [AdminController::class, 'index'])->name('petugas.dashboard');
 
 Route::middleware(['auth', Role::class])->prefix('backend')->group(function () {

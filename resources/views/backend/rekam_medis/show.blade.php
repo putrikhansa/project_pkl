@@ -33,7 +33,7 @@
                                     </tr>
                                     <tr>
                                         <th>Petugas</th>
-                                        <td>{{ $rekam_medis->petugas->user->name ?? '-' }}</td>
+                                        <td>{{ $rekam_medis->user->name ?? '-' }}</td>
                                     </tr>
 
                                 </table>

@@ -1,35 +1,34 @@
 <?php
-use App\Models\RekamMedis;
-use App\Models\JadwalPemeriksaan;
-use App\Models\Siswa;
+namespace App\Http\Controllers;
+
 use App\Models\Obat;
+use App\Models\RekamMedis;
+use App\Models\Siswa;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $jumlahRekamMedis = RekamMedis::whereMonth('tanggal', now()->month)->count();
-        $jumlahSiswa      = Siswa::count();
-        $jumlahObat       = Obat::sum('stok');
-        $jumlahJadwal     = JadwalPemeriksaan::whereDate('tanggal', '>=', now())->count();
+        $totalKunjungan = RekamMedis::count();
+        $jumlahSiswa    = Siswa::count();
+        $jumlahObat     = Obat::count();
 
-        $jadwalHariIni    = JadwalPemeriksaan::whereDate('tanggal', now())->get();
-        $jadwalMendatang  = JadwalPemeriksaan::whereDate('tanggal', '>', now())->limit(5)->get();
+        $kunjunganPerBulan = RekamMedis::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
+            ->where('tanggal', '>=', now()->subMonths(6))
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
 
-        $bulan           = [];
-        $jumlahKunjungan = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $bulan[] = date('F', mktime(0, 0, 0, $i, 1));
-            $jumlahKunjungan[] = RekamMedis::whereMonth('tanggal', $i)->count();
+        $labels = [];
+        $data   = [];
+
+        foreach ($kunjunganPerBulan as $row) {
+            $labels[] = Carbon::create()->month($row->bulan)->locale('id')->isoFormat('MMMM');
+            $data[]   = $row->total;
         }
 
-        $rekamMedisTerbaru = RekamMedis::with('siswa')->latest()->take(5)->get();
-
-        return view('dashboard', compact(
-            'jumlahRekamMedis', 'jumlahSiswa', 'jumlahObat', 'jumlahJadwal',
-            'jadwalHariIni', 'jadwalMendatang', 'bulan', 'jumlahKunjungan',
-            'rekamMedisTerbaru'
-        ));
+        // PENTING: pastikan path view-nya ini
+        return view('dashboard.admin', compact('totalKunjungan', 'jumlahSiswa', 'jumlahObat', 'labels', 'data'));
     }
 }

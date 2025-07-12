@@ -9,29 +9,19 @@ use Illuminate\Http\Request;
 
 class JadwalPemeriksaanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user'])->latest()->get();
         return view('backend.jadwal_pemeriksaan.index', compact('jadwal_pemeriksaan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $kelas = Kelas::all();
         $users = User::all();
         return view('backend.jadwal_pemeriksaan.create', compact('kelas', 'users'));
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -41,29 +31,24 @@ class JadwalPemeriksaanController extends Controller
             'keterangan' => 'nullable|string',
         ]);
 
-        JadwalPemeriksaan::create([
+        $jadwal = JadwalPemeriksaan::create([
             'tanggal'    => $request->tanggal,
             'kelas_id'   => $request->kelas_id,
             'user_id'    => $request->user_id,
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil disimpan.');
+        logAktivitas("Menambahkan jadwal pemeriksaan untuk kelas ID {$jadwal->kelas_id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
 
+        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil disimpan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user'])->findOrFail($id);
         return view('backend.jadwal_pemeriksaan.show', compact('jadwal_pemeriksaan'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id);
@@ -71,12 +56,8 @@ class JadwalPemeriksaanController extends Controller
         $users              = User::all();
 
         return view('backend.jadwal_pemeriksaan.edit', compact('jadwal_pemeriksaan', 'kelas', 'users'));
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -94,20 +75,23 @@ class JadwalPemeriksaanController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
+        logAktivitas("Mengedit jadwal pemeriksaan ID {$jadwal->id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
+
         return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $jadwal = JadwalPemeriksaan::findOrFail($id);
+        $jadwal  = JadwalPemeriksaan::findOrFail($id);
+        $tanggal = $jadwal->tanggal;
+
         $jadwal->delete();
 
-        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil dihapus.');
+        logAktivitas("Menghapus jadwal pemeriksaan pada {$tanggal}", 'jadwal_pemeriksaan');
 
+        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil dihapus.');
     }
+
     public function laporan(Request $request)
     {
         $awal  = $request->input('tanggal_awal');
@@ -123,6 +107,7 @@ class JadwalPemeriksaanController extends Controller
 
         return view('backend.jadwal_pemeriksaan.laporan', compact('jadwal', 'awal', 'akhir'));
     }
+
     public function exportPdf(Request $request)
     {
         $awal  = $request->input('tanggal_awal');
@@ -137,5 +122,4 @@ class JadwalPemeriksaanController extends Controller
 
         return $pdf->download('laporan-jadwal-pemeriksaan.pdf');
     }
-
 }

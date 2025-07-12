@@ -26,7 +26,6 @@
                                         <th>Email</th>
                                         <th>No Hp</th>
                                         <th>Role</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,7 +42,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ ucfirst($user->role) }}</td>
-                                            <td>
+                                            {{-- <td>
 
                                                 <form action="{{ route('backend.user.destroy', $user->id) }}" method="POST"
                                                     style="display: inline-block;"
@@ -52,7 +51,7 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                                 </form>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

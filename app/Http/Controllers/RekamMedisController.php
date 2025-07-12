@@ -9,19 +9,12 @@ use Illuminate\Http\Request;
 
 class RekamMedisController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'user')->latest()->get();
         return view('backend.rekam_medis.index', compact('rekam_medis'));
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $siswa = Siswa::all();
@@ -29,52 +22,33 @@ class RekamMedisController extends Controller
         $obat  = Obat::all();
 
         return view('backend.rekam_medis.create', compact('siswa', 'users', 'obat'));
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $rekam_medis           = new RekamMedis();
-        $rekam_medis->siswa_id = $request->siswa_id;
-        $rekam_medis->tanggal  = $request->tanggal;
-        $rekam_medis->keluhan  = $request->keluhan;
-        $rekam_medis->tindakan = $request->tindakan;
-        $rekam_medis->obat_id  = $request->obat_id;
+        $validated = $request->validate([
+            'siswa_id' => 'required|exists:siswas,id',
+            'tanggal'  => 'required|date',
+            'keluhan'  => 'required|string',
+            'tindakan' => 'required|string',
+            'obat_id'  => 'nullable|exists:obats,id',
+            'user_id'  => 'required|exists:users,id',
+            'status'   => 'required|string',
+        ]);
 
-        $rekam_medis->user_id = $request->user_id;
-        $rekam_medis->status  = $request->status;
+        $rekam = RekamMedis::create($validated);
 
-// Set default foto (harus ada file ini di storage/rekam_medis/default.jpg)
+        logAktivitas("Menambahkan rekam medis siswa {$rekam->siswa->nama} pada tanggal {$rekam->tanggal}", 'rekam_medis');
 
-// if ($request->hasFile('foto')) {
-//     $img  = $request->file('foto');
-//     $name = rand(1000, 9999) . $img->getClientOriginalName();
-//     $img->move('storage/rekam_medis', $name);
-//     $rekam_medis->foto = $name;
-// }
-
-        $rekam_medis->save();
-        return redirect()->route('rekam_medis.index')->with('success', 'data berhasil di tambahkan');
-
+        return redirect()->route('rekam_medis.index')->with('success', 'Data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-
         $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'user')->findOrFail($id);
         return view('backend.rekam_medis.show', compact('rekam_medis'));
-
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $rekam_medis = RekamMedis::findOrFail($id);
@@ -83,49 +57,40 @@ class RekamMedisController extends Controller
         $obat        = Obat::all();
 
         return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat'));
-
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
 
     public function update(Request $request, string $id)
     {
-
-        // Didefinisikan dulu baru digunakan
         $rekam_medis = RekamMedis::findOrFail($id);
 
-        // Update secara eksplisit (lebih aman daripada all())
-        $rekam_medis->update([
-            'siswa_id' => $request->siswa_id,
-            'tanggal'  => $request->tanggal,
-            'keluhan'  => $request->keluhan,
-            'tindakan' => $request->tindakan,
-            'obat_id'  => $request->obat_id,
-            'user_id'  => $request->user_id,
-            'status'   => $request->status,
+        $data = $request->validate([
+            'siswa_id' => 'required|exists:siswas,id',
+            'tanggal'  => 'required|date',
+            'keluhan'  => 'required|string',
+            'tindakan' => 'required|string',
+            'obat_id'  => 'nullable|exists:obats,id',
+            'user_id'  => 'required|exists:users,id',
+            'status'   => 'required|string',
         ]);
 
+        $rekam_medis->update($data);
+
+        logAktivitas("Mengedit rekam medis siswa {$rekam_medis->siswa->nama} pada tanggal {$rekam_medis->tanggal}", 'rekam_medis');
+
         return redirect()->route('rekam_medis.index')->with('success', 'Rekam medis berhasil diperbarui');
-
-        // $rekam_medis = RekamMedis::findOrFail($id);
-        // $rekam_medis->update($request->all());
-
-        // return redirect()->route('rekam_medis.index')->with('success', 'Rekam medis berhasil diperbarui');
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $rekam_medis = RekamMedis::findOrFail($id);
+        $nama        = $rekam_medis->siswa->nama;
+        $tanggal     = $rekam_medis->tanggal;
+
         $rekam_medis->delete();
 
-        return redirect()->route('rekam_medis.index')->with('success', 'Rekam medis berhasil dihapus');
+        logAktivitas("Menghapus rekam medis siswa {$nama} tanggal {$tanggal}", 'rekam_medis');
 
+        return redirect()->route('rekam_medis.index')->with('success', 'Rekam medis berhasil dihapus');
     }
 
     public function laporan(Request $request)
@@ -140,5 +105,4 @@ class RekamMedisController extends Controller
 
         return view('backend.rekam_medis.laporan', compact('rekamMedis'));
     }
-
 }
