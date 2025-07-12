@@ -37,7 +37,7 @@
                 <th>No</th>
                 <th>Tanggal</th>
                 <th>Kelas</th>
-                <th>Petugas</th>
+                <th>User</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
@@ -47,7 +47,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->tanggal }}</td>
                     <td>{{ $item->kelas->nama_kelas }}</td>
-                    <td>{{ $item->petugas->user->name ?? '-' }}</td>
+                    <td>{{ $item->user->name ?? '-' }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @endforeach

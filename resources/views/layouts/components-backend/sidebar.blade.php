@@ -41,13 +41,18 @@
          </ul>
          <div class="pcoded-navigation-label">Forms</div>
          <ul class="pcoded-item pcoded-left-item">
-             <li class="">
-                 <a href="{{ route('petugas.index') }}" class="waves-effect waves-dark">
-                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                     <span class="pcoded-mtext">Petugas </span>
-                     <span class="pcoded-mcaret"></span>
-                 </a>
-             </li>
+
+
+             @if (auth()->user()->role === 'admin')
+                 <li class="">
+                     <a href="{{ route('backend.user.index') }}" class="waves-effect waves-dark">
+                         <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                         <span class="pcoded-mtext">User </span>
+                         <span class="pcoded-mcaret"></span>
+                     </a>
+                 </li>
+             @endif
+
              <li class="">
                  <a href="{{ route('siswa.index') }}" class="waves-effect waves-dark">
                      <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
@@ -97,6 +102,18 @@
                      <span class="pcoded-mcaret"></span>
                  </a>
              </li>
+             @if (auth()->user()->role === 'admin')
+                 <li class="">
+                     <a href="{{ route('log.index') }}" class="waves-effect waves-dark">
+                         <span class="pcoded-micon"><i class="ti-bar-chart"></i><b>FC</b></span>
+                         <span class="pcoded-mtext">Log Aktivitas </span>
+                         <span class="pcoded-mcaret"></span>
+                     </a>
+                 </li>
+             @endif
+
+
+
 
 
          </ul>

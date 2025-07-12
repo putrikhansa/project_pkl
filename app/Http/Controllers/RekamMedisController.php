@@ -2,9 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Obat;
-use App\Models\Petugas;
 use App\Models\RekamMedis;
 use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RekamMedisController extends Controller
@@ -14,7 +14,7 @@ class RekamMedisController extends Controller
      */
     public function index()
     {
-        $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'petugas')->latest()->get();
+        $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'user')->latest()->get();
         return view('backend.rekam_medis.index', compact('rekam_medis'));
 
     }
@@ -24,11 +24,11 @@ class RekamMedisController extends Controller
      */
     public function create()
     {
-        $siswa   = Siswa::all();
-        $petugas = Petugas::all();
-        $obat    = Obat::all();
+        $siswa = Siswa::all();
+        $users = User::all();
+        $obat  = Obat::all();
 
-        return view('backend.rekam_medis.create', compact('siswa', 'petugas', 'obat'));
+        return view('backend.rekam_medis.create', compact('siswa', 'users', 'obat'));
 
     }
 
@@ -44,8 +44,8 @@ class RekamMedisController extends Controller
         $rekam_medis->tindakan = $request->tindakan;
         $rekam_medis->obat_id  = $request->obat_id;
 
-        $rekam_medis->petugas_id = $request->petugas_id;
-        $rekam_medis->status     = $request->status;
+        $rekam_medis->user_id = $request->user_id;
+        $rekam_medis->status  = $request->status;
 
 // Set default foto (harus ada file ini di storage/rekam_medis/default.jpg)
 
@@ -67,7 +67,7 @@ class RekamMedisController extends Controller
     public function show(string $id)
     {
 
-        $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'petugas')->findOrFail($id);
+        $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'user')->findOrFail($id);
         return view('backend.rekam_medis.show', compact('rekam_medis'));
 
     }
@@ -78,11 +78,11 @@ class RekamMedisController extends Controller
     public function edit(string $id)
     {
         $rekam_medis = RekamMedis::findOrFail($id);
-        $siswa       = Siswa::with('petugas')->get();
-        $petugas    = Petugas::with('petugas')->get();
+        $siswa       = Siswa::with('user')->get();
+        $users       = User::all();
         $obat        = Obat::all();
 
-        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'petugas', 'obat'));
+        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat'));
 
     }
 
@@ -98,13 +98,13 @@ class RekamMedisController extends Controller
 
         // Update secara eksplisit (lebih aman daripada all())
         $rekam_medis->update([
-            'siswa_id'   => $request->siswa_id,
-            'tanggal'    => $request->tanggal,
-            'keluhan'    => $request->keluhan,
-            'tindakan'   => $request->tindakan,
-            'obat_id'    => $request->obat_id,
-            'petugas_id' => $request->petugas_id,
-            'status'     => $request->status,
+            'siswa_id' => $request->siswa_id,
+            'tanggal'  => $request->tanggal,
+            'keluhan'  => $request->keluhan,
+            'tindakan' => $request->tindakan,
+            'obat_id'  => $request->obat_id,
+            'user_id'  => $request->user_id,
+            'status'   => $request->status,
         ]);
 
         return redirect()->route('rekam_medis.index')->with('success', 'Rekam medis berhasil diperbarui');

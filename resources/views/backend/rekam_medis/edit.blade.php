@@ -52,13 +52,13 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <label for="petugas_id">Pilih Petugas</label>
-                                        <select name="petugas_id" class="form-control" required>
+                                        <label for="user_id">Pilih Petugas</label>
+                                        <select name="user_id" class="form-control" required>
                                             <option value="">-- Pilih Petugas --</option>
-                                            @foreach ($petugas as $p)
+                                            @foreach ($users as $p)
                                                 <option value="{{ $p->id }}"
-                                                    {{ $rekam_medis->petugas_id == $p->id ? 'selected' : '' }}>
-                                                    {{ $p->nama }}
+                                                    {{ $rekam_medis->user_id == $p->id ? 'selected' : '' }}>
+                                                    {{ $p->name }}
                                                 </option>
                                             @endforeach
                                         </select>

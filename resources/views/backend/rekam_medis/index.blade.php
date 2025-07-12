@@ -36,12 +36,12 @@
                                     @foreach ($rekam_medis as $data)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $data->siswa->kelas->nama ?? '-' }}</td>
+                                            <td>{{ $data->siswa->nama ?? '-' }}</td>
                                             <td>{{ $data->tanggal }}</td>
                                             <td>{{ $data->keluhan }}</td>
                                             <td>{{ $data->tindakan }}</td>
                                             <td>{{ $data->obat->id }}</td>
-                                            <td>{{ $data->users->id }}</td>
+                                            <td>{{ $data->user->name }}</td>
                                             <td>{{ $data->status }}</td>
 
 

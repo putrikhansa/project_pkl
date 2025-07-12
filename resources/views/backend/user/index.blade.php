@@ -10,45 +10,47 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header bg-primary">
-                        Data jadwal pemeriksaan
-                        <a href="{{ route('jadwal_pemeriksaan.create') }}" class="btn btn-secondary btn-sm"
+                        Data user
+                        <a href="{{ route('backend.user.create') }}" class="btn btn-secondary btn-sm"
                             style="color:white; float: right;">
                             Tambah
                         </a>
                     </div>
                     <div class="card-body">
                         <div class="table table-responsive">
-                            <table class="table" id="datajadwal_pemeriksaan">
+                            <table class="table" id="datauser">
                                 <thead class="text-dark">
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Kelas Id</th>
-                                        <th>Petugas Id</th>
-                                        <th>Keterangan</th>
+                                        <th>Nama user</th>
+                                        <th>Email</th>
+                                        <th>No Hp</th>
+                                        <th>Role</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($jadwal_pemeriksaan as $data)
+                                    @foreach ($users as $index => $user)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $data->tanggal }}</td>
-                                            <td>{{ $data->kelas->nama_kelas ?? '-' }}</td>
-                                            <td>{{ $data->user->name}}</td>
-                                            <td>{{ $data->keterangan }}</td>
-
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
                                             <td>
-                                                <a href="{{ route('jadwal_pemeriksaan.show', $data->id) }}"
-                                                    class="btn btn-info btn-sm">Show</a>
-                                                <a href="{{ route('jadwal_pemeriksaan.edit', $data->id) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('jadwal_pemeriksaan.destroy', $data->id) }}"
-                                                    method="POST" style="display:inline;"
-                                                    onsubmit="return confirm('yakin ingin menghapus jadwal_pemeriksaan ini?')">
+                                                @if ($user->role === 'admin' && empty($user->no_hp))
+                                                    <span class="text-muted fst-italic">Tidak Tersedia</span>
+                                                @else
+                                                    {{ $user->no_hp }}
+                                                @endif
+                                            </td>
+                                            <td>{{ ucfirst($user->role) }}</td>
+                                            <td>
+
+                                                <form action="{{ route('backend.user.destroy', $user->id) }}" method="POST"
+                                                    style="display: inline-block;"
+                                                    onsubmit="return confirm('Yakin hapus user ini?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm">Hapus</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>

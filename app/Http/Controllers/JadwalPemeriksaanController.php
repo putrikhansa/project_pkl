@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\JadwalPemeriksaan;
 use App\Models\Kelas;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class JadwalPemeriksaanController extends Controller
@@ -23,9 +23,9 @@ class JadwalPemeriksaanController extends Controller
      */
     public function create()
     {
-        $kelas   = Kelas::all();
+        $kelas = Kelas::all();
         $users = User::all();
-        return view('backend.jadwal_pemeriksaan.create', compact('kelas', 'user'));
+        return view('backend.jadwal_pemeriksaan.create', compact('kelas', 'users'));
 
     }
 
@@ -37,14 +37,14 @@ class JadwalPemeriksaanController extends Controller
         $request->validate([
             'tanggal'    => 'required|date',
             'kelas_id'   => 'required|exists:kelas,id',
-            'user_id' => 'required|exists:user,id',
+            'user_id'    => 'required|exists:users,id',
             'keterangan' => 'nullable|string',
         ]);
 
         JadwalPemeriksaan::create([
             'tanggal'    => $request->tanggal,
             'kelas_id'   => $request->kelas_id,
-            'user_id' => $request->user_id,
+            'user_id'    => $request->user_id,
             'keterangan' => $request->keterangan,
         ]);
 
@@ -57,7 +57,7 @@ class JadwalPemeriksaanController extends Controller
      */
     public function show(string $id)
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user.user'])->findOrFail($id);
+        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user'])->findOrFail($id);
         return view('backend.jadwal_pemeriksaan.show', compact('jadwal_pemeriksaan'));
     }
 
@@ -68,9 +68,9 @@ class JadwalPemeriksaanController extends Controller
     {
         $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id);
         $kelas              = Kelas::all();
-        $users            = user::with('user')->get();
+        $users              = User::all();
 
-        return view('backend.jadwal_pemeriksaan.edit', compact('jadwal_pemeriksaan', 'kelas', 'user'));
+        return view('backend.jadwal_pemeriksaan.edit', compact('jadwal_pemeriksaan', 'kelas', 'users'));
 
     }
 
@@ -82,7 +82,7 @@ class JadwalPemeriksaanController extends Controller
         $request->validate([
             'tanggal'    => 'required|date',
             'kelas_id'   => 'required|exists:kelas,id',
-            'user_id' => 'required|exists:user,id',
+            'user_id'    => 'required|exists:users,id',
             'keterangan' => 'nullable|string',
         ]);
 
@@ -90,7 +90,7 @@ class JadwalPemeriksaanController extends Controller
         $jadwal->update([
             'tanggal'    => $request->tanggal,
             'kelas_id'   => $request->kelas_id,
-            'user_id' => $request->user_id,
+            'user_id'    => $request->user_id,
             'keterangan' => $request->keterangan,
         ]);
 
@@ -116,7 +116,7 @@ class JadwalPemeriksaanController extends Controller
         $jadwal = null;
 
         if ($awal && $akhir) {
-            $jadwal = \App\Models\JadwalPemeriksaan::with('kelas')
+            $jadwal = JadwalPemeriksaan::with('kelas')
                 ->whereBetween('tanggal', [$awal, $akhir])
                 ->get();
         }
@@ -128,7 +128,7 @@ class JadwalPemeriksaanController extends Controller
         $awal  = $request->input('tanggal_awal');
         $akhir = $request->input('tanggal_akhir');
 
-        $jadwal = JadwalPemeriksaan::with(['kelas', 'user.user'])
+        $jadwal = JadwalPemeriksaan::with(['kelas', 'user'])
             ->whereBetween('tanggal', [$awal, $akhir])
             ->get();
 

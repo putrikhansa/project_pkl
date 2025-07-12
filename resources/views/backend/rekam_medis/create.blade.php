@@ -57,11 +57,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="petugas_id">Pilih Petugas</label>
-                                <select name="petugas_id" class="form-control">
+                                <label for="user_id">Pilih Petugas</label>
+                                <select name="user_id" class="form-control">
                                     <option value="">-- Pilih Petugas --</option>
-                                    @foreach ($petugas as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @foreach ($users as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

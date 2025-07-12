@@ -19,7 +19,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'no_hp',
         'password',
+        'role',
     ];
 
     /**
@@ -55,6 +57,8 @@ class User extends Authenticatable
     {
         return $this->role === 'petugas';
     }
-
-
+    public function logAktivitas()
+    {
+        return $this->hasMany(LogAktivitas::class);
+    }
 }

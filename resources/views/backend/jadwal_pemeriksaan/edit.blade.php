@@ -32,12 +32,12 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="petugas_id">Pilih Petugas</label>
-                                            <select name="petugas_id" class="form-control">
-                                                @foreach ($petugas as $item)
+                                            <label for="user_id">Pilih Petugas</label>
+                                            <select name="user_id" class="form-control">
+                                                @foreach ($users as $item)
                                                     <option value="{{ $item->id }}"
-                                                        {{ $jadwal_pemeriksaan->petugas_id == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
+                                                        {{ $jadwal_pemeriksaan->user_id == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->name }}
                                                     </option>
                                                 @endforeach
                                             </select>

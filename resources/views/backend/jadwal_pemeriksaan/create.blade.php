@@ -29,17 +29,17 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="petugas_id">Petugas</label>
-                                <select name="petugas_id" class="form-control @error('petugas_id') is-invalid @enderror">
+                                <label for="user_id">Petugas</label>
+                                <select name="user_id" class="form-control @error('user_id') is-invalid @enderror">
                                     <option value="">-- Pilih Petugas --</option>
-                                    @foreach ($petugas as $item)
+                                    @foreach ($users as $item)
                                         <option value="{{ $item->id }}"
-                                            {{ old('petugas_id') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->nama }}
+                                            {{ old('user_id') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('petugas_id')
+                                @error('user_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

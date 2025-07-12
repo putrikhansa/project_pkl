@@ -18,13 +18,13 @@ return new class extends Migration
             $table->text('keluhan');
             $table->string('tindakan');
             $table->unsignedBigInteger('obat_id');
-            $table->unsignedBigInteger('petugas_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('status');
 
             //relasi ini yh
             $table->foreign('siswa_id')->references('id')->on('siswas');
             $table->foreign('obat_id')->references('id')->on('obats');
-            $table->foreign('petugas_id')->references('id')->on('petugas');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

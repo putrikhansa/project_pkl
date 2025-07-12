@@ -17,11 +17,11 @@
                                     </tr>
                                     <tr>
                                         <th>kelas id</th>
-                                        <td>{{ $jadwal_pemeriksaan->kelas_id }}</td>
+                                        <td>{{ $jadwal_pemeriksaan->kelas->nama_kelas }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Petugas Id</th>
-                                        <td>{{ $jadwal_pemeriksaan->petugas_id }}</td>
+                                        <th>User Id</th>
+                                        <td>{{ $jadwal_pemeriksaan->user->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Keterangan</th>
