@@ -33,7 +33,7 @@ class ObatController extends Controller
 
         logAktivitas("Menambahkan obat bernama {$obat->nama_obat}", 'obat');
 
-        return redirect()->route('obat.index')->with('success', 'Obat berhasil ditambahkan');
+        return redirect()->route('backend.obat.index')->with('success', 'Obat berhasil ditambahkan');
     }
 
     public function show(string $id)
@@ -72,7 +72,7 @@ class ObatController extends Controller
 
         logAktivitas("Mengedit data obat bernama {$obat->nama_obat}", 'obat');
 
-        return redirect()->route('obat.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('backend.obat.index')->with('success', 'Data berhasil diubah');
     }
 
     public function destroy(string $id)
@@ -84,6 +84,6 @@ class ObatController extends Controller
 
         logAktivitas("Menghapus obat bernama {$nama}", 'obat');
 
-        return redirect()->route('obat.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('backend.obat.index')->with('success', 'Data berhasil dihapus');
     }
 }

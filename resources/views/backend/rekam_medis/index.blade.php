@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         Data Rekam Medis
-                        <a href="{{ route('rekam_medis.create') }}" class="btn btn-secondary btn-sm"
+                        <a href="{{ route('backend.rekam_medis.create') }}" class="btn btn-secondary btn-sm"
                             style="color:white; float: right;">
                             Tambah
                         </a>
@@ -42,20 +42,26 @@
                                             <td>{{ $data->tindakan }}</td>
                                             <td>{{ $data->obat->id }}</td>
                                             <td>{{ $data->user->name }}</td>
-                                            <td>{{ $data->status }}</td>
+                                            <td>
+                                                <span
+                                                    class="badge badge-status {{ $data->status === 'Pulang' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ ucfirst($data->status) }}
+                                                </span>
+                                            </td>
+                                            {{-- <td>{{ $data->status }}</td> --}}
 
 
                                             <td>
-                                                <a href="{{ route('rekam_medis.show', $data->id) }}"
-                                                    class="btn btn-info btn-sm">Show</a>
-                                                <a href="{{ route('rekam_medis.edit', $data->id) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('rekam_medis.destroy', $data->id) }}" method="POST"
-                                                    style="display:inline;"
+                                                <a href="{{ route('backend.rekam_medis.show', $data->id) }}"
+                                                    class="btn btn-info btn-sm"><i class='bx bx-show'></i></a>
+                                                <a href="{{ route('backend.rekam_medis.edit', $data->id) }}"
+                                                    class="btn btn-success btn-sm"><i class='bx bx-edit'></i></a>
+                                                <form action="{{ route('backend.rekam_medis.destroy', $data->id) }}"
+                                                    method="POST" style="display:inline;"
                                                     onsubmit="return confirm('yakin ingin menghapus rekam_medis ini?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm">Hapus</button>
+                                                    <button class="btn btn-danger btn-sm"><i class='bx bx-trash'></i></button>
                                                 </form>
                                             </td>
                                         </tr>

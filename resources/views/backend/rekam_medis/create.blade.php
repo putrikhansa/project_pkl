@@ -8,7 +8,7 @@
                         Tambah rekam medis
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('rekam_medis.store') }}" method="POST">
+                        <form action="{{ route('backend.rekam_medis.store') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
@@ -47,15 +47,16 @@
                             @error('tindakan') is-invalid @enderror">
 
                             </div>
-                            <div class="mb-3">
-                                <label for="obat_id">Pilih Obat</label>
-                                <select name="obat_id" class="form-control" multiple>
-                                    @foreach ($obat as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_obat }}</option>
+                            <div class="form-group">
+                                <label for="obat_id">Obat (Opsional)</label>
+                                <select name="obat_id" class="form-control">
+                                    <option value="">-- Pilih Obat --</option>
+                                    @foreach ($obat as $o)
+                                        <option value="{{ $o->id }}">{{ $o->nama_obat }} (Stok: {{ $o->stok }})
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label for="user_id">Pilih Petugas</label>
                                 <select name="user_id" class="form-control">

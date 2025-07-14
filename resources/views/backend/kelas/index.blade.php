@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         Data Kelas
-                        <a href="{{ route('kelas.create') }}" class="btn btn-secondary btn-sm"
+                        <a href="{{ route('backend.kelas.create') }}" class="btn btn-secondary btn-sm"
                             style="color:white; float: right;">
                             Tambah
                         </a>
@@ -32,11 +32,11 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $data->nama_kelas }}</td>
                                             <td>
-                                                <a href="{{ route('kelas.show', $data->id) }}"
+                                                <a href="{{ route('backend.kelas.show', $data->id) }}"
                                                     class="btn btn-info btn-sm">Show</a>
-                                                <a href="{{ route('kelas.edit', $data->id) }}"
+                                                <a href="{{ route('backend.kelas.edit', $data->id) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('kelas.destroy', $data->id) }}" method="POST"
+                                                <form action="{{ route('backend.kelas.destroy', $data->id) }}" method="POST"
                                                     style="display:inline;"
                                                     onsubmit="return confirm('yakin ingin menghapus kelas ini?')">
                                                     @csrf

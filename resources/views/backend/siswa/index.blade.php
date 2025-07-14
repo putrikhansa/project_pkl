@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         Data Siswa
-                        <a href="{{ route('siswa.create') }}" class="btn btn-secondary btn-sm float-end">
+                        <a href="{{ route('backend.siswa.create') }}" class="btn btn-secondary btn-sm float-right">
                             Tambah
                         </a>
                     </div>
@@ -57,7 +57,7 @@
                 let keyword = $('#search-input').val();
 
                 $.ajax({
-                    url: "{{ route('siswa.search') }}",
+                    url: "{{ route('backend.siswa.search') }}",
                     type: 'GET',
                     data: {
                         keyword: keyword,

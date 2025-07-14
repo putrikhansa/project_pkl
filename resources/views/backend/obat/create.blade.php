@@ -8,7 +8,7 @@
                         Tambah obat
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('obat.store') }}" method="POST">
+                        <form action="{{ route('backend.obat.store') }}" method="POST">
                             @csrf
                             <div class="mb-2">
                                 <label for="">Nama Obat </label>

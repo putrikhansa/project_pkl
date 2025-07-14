@@ -11,7 +11,7 @@
                                     <div class="card-title"> Ubah Data Jadwal Pemeriksaan</div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{ route('jadwal_pemeriksaan.update', $jadwal_pemeriksaan->id) }}"
+                                    <form action="{{ route('backend.jadwal_pemeriksaan.update', $jadwal_pemeriksaan->id) }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
@@ -50,7 +50,7 @@
 
                                         <div class="card-action">
                                             <button class="btn btn-info" style="float: right" type="submit">Ubah</button>
-                                            <a href="{{ route('jadwal_pemeriksaan.index') }}" class=""><i
+                                            <a href="{{ route('backend.jadwal_pemeriksaan.index') }}" class=""><i
                                                     class="flaticon-back"></i></a>
                                         </div>
                                     </form>

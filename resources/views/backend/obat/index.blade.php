@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         Data obat
-                        <a href="{{ route('obat.create') }}" class="btn btn-secondary btn-sm" style="color:white; float: right;">
+                        <a href="{{ route('backend.obat.create') }}" class="btn btn-secondary btn-sm" style="color:white; float: right;">
                             Tambah
                         </a>
                     </div>
@@ -42,11 +42,11 @@
                                             <td>{{ $data->deskripsi }}</td>
 
                                             <td>
-                                                <a href="{{ route('obat.show', $data->id) }}"
+                                                <a href="{{ route('backend.obat.show', $data->id) }}"
                                                     class="btn btn-info btn-sm">Show</a>
-                                                    <a href="{{ route('obat.edit', $data->id) }}"
+                                                    <a href="{{ route('backend.obat.edit', $data->id) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('obat.destroy', $data->id) }}" method="POST"
+                                                <form action="{{ route('backend.obat.destroy', $data->id) }}" method="POST"
                                                     style="display:inline;"
                                                     onsubmit="return confirm('yakin ingin menghapus obat ini?')">
                                                     @csrf

@@ -11,7 +11,7 @@
                                     <div class="card-title"> Ubah Data rekam medis</div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{ route('rekam_medis.update', $rekam_medis->id) }}" method="POST"
+                                    <form action="{{ route('backend.rekam_medis.update', $rekam_medis->id) }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="card-action">
                                             <button class="btn btn-info" style="float: right" type="submit">Ubah</button>
-                                            <a href="{{ route('rekam_medis.index') }}" class=""><i
+                                            <a href="{{ route('backend.rekam_medis.index') }}" class=""><i
                                                     class="flaticon-back"></i></a>
                                         </div>
                                     </form>

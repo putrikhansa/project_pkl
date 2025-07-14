@@ -17,7 +17,7 @@
                                     </tr>
 
                                 </table>
-                                <a href="{{ route('kelas.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('backend.kelas.index') }}" class="btn btn-primary">Kembali</a>
                             </div>
                         </div>
                     </div>

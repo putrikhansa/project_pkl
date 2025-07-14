@@ -8,7 +8,7 @@
                         Tambah kelas
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('kelas.store') }}" method="POST">
+                        <form action="{{ route('backend.kelas.store') }}" method="POST">
                             @csrf
                             <div class="mb-2">
                                 <label for="">Nama kelas </label>

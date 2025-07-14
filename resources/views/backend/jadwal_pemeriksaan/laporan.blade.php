@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h3>Laporan Jadwal Pemeriksaan</h3>
-        <form method="GET" action="{{ route('jadwal_pemeriksaan.laporan') }}">
+        <form method="GET" action="{{ route('backend.jadwal_pemeriksaan.laporan') }}">
             <div class="row">
                 <div class="col">
                     <label>Dari Tanggal</label>
@@ -50,11 +50,13 @@
                         </tbody>
                     </table>
                     @if ($jadwal)
-                        <form action="{{ route('jadwal_pemeriksaan.export.pdf') }}" method="GET" target="_blank"
+                        <form action="{{ route('backend.jadwal_pemeriksaan.export.pdf') }}" method="GET" target="_blank"
                             class="mt-3">
                             <input type="hidden" name="tanggal_awal" value="{{ $awal }}">
                             <input type="hidden" name="tanggal_akhir" value="{{ $akhir }}">
-                            <button class="btn btn-danger">Export PDF</button>
+                            <button class="btn btn-danger">
+                                <i class="bx bxs-file-pdf"> PDF</i>
+                            </button>
                         </form>
                     @endif
                 </div>

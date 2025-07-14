@@ -3,24 +3,21 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
 
-        <img src="{{ asset('assets/frontend/img/hero-bg.jpg')}}" alt="" data-aos="fade-in">
+        <img src="{{ asset('assets/frontend/img/hero-bg.jpg') }}" alt="" data-aos="fade-in">
 
         <div class="container position-relative">
 
             <div class="welcome position-relative" data-aos="fade-down" data-aos-delay="100">
-                <h2>WELCOME TO SISEHAT</h2>
-                <p>We are team of talented designers making websites with Bootstrap</p>
+                <h2>SELAMAT DATANG </h2>
+                <p>DI WEBSITE SISEHAT</p>
             </div><!-- End Welcome -->
 
             <div class="content row gy-4">
                 <div class="col-lg-4 d-flex align-items-stretch">
                     <div class="why-box" data-aos="zoom-out" data-aos-delay="200">
-                        <h3>Why Choose Medilab?</h3>
+                        <h3>Why Choose SiSehat?</h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                            Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad
-                            corporis.
+                            Karena sistem kamu bernama SiSehat, kamu bisa isi dengan poin-poin keunggulan UKS digital ini.
                         </p>
                         <div class="text-center">
                             <a href="#about" class="more-btn"><span>Learn More</span> <i
@@ -35,27 +32,27 @@
 
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box" data-aos="zoom-out" data-aos-delay="300">
-                                    <i class="bi bi-clipboard-data"></i>
-                                    <h4>Corporis voluptates officia eiusmod</h4>
-                                    <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip
+                                    <i class="bi bi-bar-chart"></i>
+                                    <h4>Laporan Kesehatan Otomatis</h4>
+                                    <p>Semua riwayat kunjungan siswa tercatat rapi dan bisa dilihat kapan saja.
                                     </p>
                                 </div>
                             </div><!-- End Icon Box -->
 
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box" data-aos="zoom-out" data-aos-delay="400">
-                                    <i class="bi bi-gem"></i>
-                                    <h4>Ullamco laboris ladore pan</h4>
-                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                    <i class="bi bi-person-vcard"></i>
+                                    <h4>Data Siswa Terintegrasi </h4>
+                                    <p>Petugas bisa melihat info kesehatan setiap siswa dengan mudah.
                                     </p>
                                 </div>
                             </div><!-- End Icon Box -->
 
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box" data-aos="zoom-out" data-aos-delay="500">
-                                    <i class="bi bi-inboxes"></i>
-                                    <h4>Labore consequatur incidid dolore</h4>
-                                    <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                                    <i class="bi bi-lightbulb"></i>
+                                    <h4>Mudah Digunakan</h4>
+                                    <p>Tampilan sederhana dan ramah digunakan oleh petugas</p>
                                 </div>
                             </div><!-- End Icon Box -->
 
@@ -76,8 +73,8 @@
             <div class="row gy-4 gx-5">
 
                 <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="200">
-                    <img src="{{ asset('assets/img/about.jpg') }}" class="img-fluid" alt="">
-                    <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+                    <img src="{{ asset('assets/frontend/img/WhatsApp Image 2025-07-08 at 20.22.56_949ce290.jpg') }}"
+                        class="img-fluid" alt="">
                 </div>
 
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
@@ -122,52 +119,34 @@
 
     <!-- Stats Section -->
     <section id="stats" class="stats section light-background">
-
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-
             <div class="row gy-4">
 
-                <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                    <i class="fa-solid fa-user-doctor"></i>
-                    <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="85" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Doctors</p>
-                    </div>
-                </div><!-- End Stats Item -->
 
+                <!-- Tambahan: Kunjungan -->
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                    <i class="fa-regular fa-hospital"></i>
+                    <i class="fas fa-notes-medical"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="18" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Departments</p>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $jumlahKunjungan }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Total Kunjungan</p>
                     </div>
-                </div><!-- End Stats Item -->
+                </div>
 
+                <!-- Tambahan: Obat -->
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                    <i class="fas fa-flask"></i>
+                    <i class="fas fa-capsules"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Research Labs</p>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $jumlahObat }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Jumlah Obat</p>
                     </div>
-                </div><!-- End Stats Item -->
-
-                <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                    <i class="fas fa-award"></i>
-                    <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Awards</p>
-                    </div>
-                </div><!-- End Stats Item -->
+                </div>
 
             </div>
-
         </div>
-
-    </section><!-- /Stats Section -->
+    </section>
+    <!-- /Stats Section -->
 
     <!-- Services Section -->
     <section id="services" class="services section">
@@ -185,84 +164,38 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-item  position-relative">
                         <div class="icon">
-                            <i class="fas fa-heartbeat"></i>
+                            <i class="bi bi-heart-pulse"></i>
                         </div>
                         <a href="#" class="stretched-link">
-                            <h3>Nesciunt Mete</h3>
+                            <h3>Pemeriksaan Kesehatan</h3>
                         </a>
-                        <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure
-                            perferendis tempore et consequatur.</p>
+                        <p>Pemeriksaan tekanan darah, suhu tubuh, dan kondisi umum siswa secara rutin.</p>
                     </div>
                 </div><!-- End Service Item -->
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item position-relative">
                         <div class="icon">
-                            <i class="fas fa-pills"></i>
+                            <i class="bi bi-capsule"></i>
                         </div>
                         <a href="#" class="stretched-link">
-                            <h3>Eosle Commodi</h3>
+                            <h3>Pemberian Obat </h3>
                         </a>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non
-                            ut nesciunt dolorem.</p>
+                        <p>Pemberian obat ringan sesuai keluhan, dengan pengawasan petugas.</p>
                     </div>
                 </div><!-- End Service Item -->
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-item position-relative">
                         <div class="icon">
-                            <i class="fas fa-hospital-user"></i>
+                            <i class="bi bi-journal-text"></i>
                         </div>
                         <a href="#" class="stretched-link">
-                            <h3>Ledo Markt</h3>
+                            <h3>Catatan Rekam Medis </h3>
                         </a>
-                        <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas
-                            adipisci eos earum corrupti.</p>
+                        <p>Semua kunjungan siswa dicatat agar riwayat kesehatan bisa dipantau.</p>
                     </div>
                 </div><!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="fas fa-dna"></i>
-                        </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Asperiores Commodit</h3>
-                        </a>
-                        <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit
-                            provident adipisci neque.</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="fas fa-wheelchair"></i>
-                        </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Velit Doloremque</h3>
-                        </a>
-                        <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at
-                            autem alias eius labore.</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="fas fa-notes-medical"></i>
-                        </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Dolori Architecto</h3>
-                        </a>
-                        <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti
-                            recusandae ducimus enim.</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div><!-- End Service Item -->
-
             </div>
 
         </div>
@@ -270,7 +203,7 @@
     </section><!-- /Services Section -->
 
     <!-- Appointment Section -->
-    <section id="appointment" class="appointment section">
+    {{-- <section id="appointment" class="appointment section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
@@ -331,7 +264,7 @@
 
         </div>
 
-    </section><!-- /Appointment Section -->
+    </section><!-- /Appointment Section --> --}}
 
     <!-- Departments Section -->
     <section id="departments" class="departments section">
@@ -378,7 +311,7 @@
                                         accusamus nostrum rem vero</p>
                                 </div>
                                 <div class="col-lg-4 text-center order-1 order-lg-2">
-                                    <img src="{{ asset('assets/img/departments-1.jpg') }}" alt=""
+                                    <img src="{{ asset('assets/frontend/img/departments-1.jpg') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -395,7 +328,7 @@
                                         de nideran pal</p>
                                 </div>
                                 <div class="col-lg-4 text-center order-1 order-lg-2">
-                                    <img src="{{ asset('assets/img/departments-2.jpg') }}" alt=""
+                                    <img src="{{ asset('assets/frontend/img/departments-2.jpg') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -413,7 +346,7 @@
                                         voluptatem optio quae</p>
                                 </div>
                                 <div class="col-lg-4 text-center order-1 order-lg-2">
-                                    <img src="{{ asset('assets/img/departments-3.jpg') }}" alt=""
+                                    <img src="{{ asset('assets/frontend/img/departments-3.jpg') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -430,7 +363,7 @@
                                         inventore</p>
                                 </div>
                                 <div class="col-lg-4 text-center order-1 order-lg-2">
-                                    <img src="{{ asset('assets/img/departments-4.jpg') }}" alt=""
+                                    <img src="{{ asset('assets/frontend/img/departments-4.jpg') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -445,7 +378,7 @@
                                         sed est sint aut vitae molestiae voluptate vel</p>
                                 </div>
                                 <div class="col-lg-4 text-center order-1 order-lg-2">
-                                    <img src="{{ asset('assets/img/departments-5.jpg') }}" alt=""
+                                    <img src="{{ asset('assets/frontend/img/departments-5.jpg') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -460,94 +393,45 @@
 
     <!-- Doctors Section -->
     <section id="doctors" class="doctors section">
-
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <h2>Doctors</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <h2>Petugas</h2>
+            <p>Petugas UKS yang siap melayani kebutuhan kesehatan siswa di sekolah.</p>
         </div><!-- End Section Title -->
 
         <div class="container">
-
             <div class="row gy-4">
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="team-member d-flex align-items-start">
-                        <div class="pic"><img src="{{ asset('assets/img/doctors/doctors-1.jpg') }}" class="img-fluid"
-                                alt=""></div>
-                        <div class="member-info">
-                            <h4>Walter White</h4>
-                            <span>Chief Medical Officer</span>
-                            <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
-                            <div class="social">
-                                <a href=""><i class="bi bi-twitter-x"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""> <i class="bi bi-linkedin"></i> </a>
+                @forelse ($users as $index => $user)
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        <div class="team-member d-flex align-items-start">
+                            {{-- <div class="pic">
+                                <img src="{{ asset('assets/frontend/img/doctors/default.png') }}" class="img-fluid"
+                                    alt="Petugas">
+                            </div> --}}
+                            <div class="member-info">
+                                <h4>{{ $user->name }}</h4>
+                                <span>Petugas UKS</span>
+                                <p>Email: {{ $user->email }}</p>
+                                {{-- <div class="social">
+                                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                    <a href="#"><i class="bi bi-facebook"></i></a>
+                                    <a href="#"><i class="bi bi-instagram"></i></a>
+                                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                                </div> --}}
                             </div>
                         </div>
+                    </div><!-- End Team Member -->
+                @empty
+                    <div class="col-12">
+                        <p class="text-center text-muted">Belum ada petugas yang terdaftar.</p>
                     </div>
-                </div><!-- End Team Member -->
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="team-member d-flex align-items-start">
-                        <div class="pic"><img src="{{ asset('assets/img/doctors/doctors-2.jpg') }}" class="img-fluid"
-                                alt=""></div>
-                        <div class="member-info">
-                            <h4>Sarah Jhonson</h4>
-                            <span>Anesthesiologist</span>
-                            <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
-                            <div class="social">
-                                <a href=""><i class="bi bi-twitter-x"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""> <i class="bi bi-linkedin"></i> </a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- End Team Member -->
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="team-member d-flex align-items-start">
-                        <div class="pic"><img src="{{ asset('assets/img/doctors/doctors-3.jpg') }}" class="img-fluid"
-                                alt=""></div>
-                        <div class="member-info">
-                            <h4>William Anderson</h4>
-                            <span>Cardiology</span>
-                            <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
-                            <div class="social">
-                                <a href=""><i class="bi bi-twitter-x"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""> <i class="bi bi-linkedin"></i> </a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- End Team Member -->
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="team-member d-flex align-items-start">
-                        <div class="pic"><img src="{{ asset('assets/img/doctors/doctors-4.jpg') }}" class="img-fluid"
-                                alt=""></div>
-                        <div class="member-info">
-                            <h4>Amanda Jepson</h4>
-                            <span>Neurosurgeon</span>
-                            <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
-                            <div class="social">
-                                <a href=""><i class="bi bi-twitter-x"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""> <i class="bi bi-linkedin"></i> </a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- End Team Member -->
+                @endforelse
 
             </div>
-
         </div>
-
-    </section><!-- /Doctors Section -->
+    </section>
+    {{-- !-- /Doctors Section --> --}}
 
     <!-- Faq Section -->
     <section id="faq" class="faq section light-background">
@@ -677,7 +561,7 @@
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}"
+                                        <img src="{{ asset('assets/frontend/img/testimonials/testimonials-1.jpg') }}"
                                             class="testimonial-img flex-shrink-0" alt="">
                                         <div>
                                             <h3>Saul Goodman</h3>
@@ -702,7 +586,7 @@
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/img/testimonials/testimonials-2.jpg') }}"
+                                        <img src="{{ asset('assets/frontend/img/testimonials/testimonials-2.jpg') }}"
                                             class="testimonial-img flex-shrink-0" alt="">
                                         <div>
                                             <h3>Sara Wilsson</h3>
@@ -727,7 +611,7 @@
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/img/testimonials/testimonials-3.jpg') }}"
+                                        <img src="{{ asset('assets/frontend/img/testimonials/testimonials-3.jpg') }}"
                                             class="testimonial-img flex-shrink-0" alt="">
                                         <div>
                                             <h3>Jena Karlis</h3>
@@ -752,7 +636,7 @@
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/img/testimonials/testimonials-4.jpg') }}"
+                                        <img src="{{ asset('assets/frontend/img/testimonials/testimonials-4.jpg') }}"
                                             class="testimonial-img flex-shrink-0" alt="">
                                         <div>
                                             <h3>Matt Brandon</h3>
@@ -777,7 +661,7 @@
                             <div class="swiper-slide">
                                 <div class="testimonial-item">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/img/testimonials/testimonials-5.jpg') }}"
+                                        <img src="{{ asset('assets/frontend/img/testimonials/testimonials-5.jpg') }}"
                                             class="testimonial-img flex-shrink-0" alt="">
                                         <div>
                                             <h3>John Larson</h3>
@@ -826,72 +710,80 @@
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-1.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-1.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-1.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-1.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-2.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-2.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-2.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-2.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-3.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-3.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-3.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-3.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-4.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-4.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-4.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-4.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-5.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-5.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-5.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-5.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-6.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-6.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-6.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-6.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-7.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-7.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-7.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-7.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
 
                 <div class="col-lg-3 col-md-4">
                     <div class="gallery-item">
-                        <a href="{{ asset('assets/img/gallery/gallery-8.jpg') }}" class="glightbox"
+                        <a href="{{ asset('assets/frontend/img/gallery/gallery-8.jpg') }}" class="glightbox"
                             data-gallery="images-gallery">
-                            <img src="{{ asset('assets/img/gallery/gallery-8.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('assets/frontend/img/gallery/gallery-8.jpg') }}" alt=""
+                                class="img-fluid">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
@@ -901,92 +793,4 @@
         </div>
 
     </section><!-- /Gallery Section -->
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <h2>Contact</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div><!-- End Section Title -->
-
-        <div class="mb-5" data-aos="fade-up" data-aos-delay="200">
-            <iframe style="border:0; width: 100%; height: 270px;"
-                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus"
-                frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div><!-- End Google Maps -->
-
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="row gy-4">
-
-                <div class="col-lg-4">
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <i class="bi bi-geo-alt flex-shrink-0"></i>
-                        <div>
-                            <h3>Location</h3>
-                            <p>A108 Adam Street, New York, NY 535022</p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-                        <i class="bi bi-telephone flex-shrink-0"></i>
-                        <div>
-                            <h3>Call Us</h3>
-                            <p>+1 5589 55488 55</p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
-                        <i class="bi bi-envelope flex-shrink-0"></i>
-                        <div>
-                            <h3>Email Us</h3>
-                            <p>info@example.com</p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                </div>
-
-                <div class="col-lg-8">
-                    <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up"
-                        data-aos-delay="200">
-                        <div class="row gy-4">
-
-                            <div class="col-md-6">
-                                <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                    required="">
-                            </div>
-
-                            <div class="col-md-6 ">
-                                <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                    required="">
-                            </div>
-
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                    required="">
-                            </div>
-
-                            <div class="col-md-12">
-                                <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                            </div>
-
-                            <div class="col-md-12 text-center">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                <button type="submit">Send Message</button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div><!-- End Contact Form -->
-
-            </div>
-
-        </div>
-
-    </section><!-- /Contact Section -->
 @endsection

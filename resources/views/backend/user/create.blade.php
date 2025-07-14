@@ -5,7 +5,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        Tambah siswa
+                        Tambah User
                     </div>
                     <div class="card-body">
                         <form action="{{ route('backend.user.store') }}" method="POST">
@@ -30,7 +30,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="role" class="form-label">Role</label>
-                                <select name="role" id="role" class="form-select" required>
+                                <select name="role" id="role" class="form-control" required>
                                     <option value="">-- Pilih Role --</option>
                                     <option value="petugas" {{ old('role') == 'petugas' ? 'selected' : '' }}>Petugas
                                     </option>

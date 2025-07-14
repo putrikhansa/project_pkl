@@ -36,7 +36,7 @@
                                         <td>{{ $obat->deskripsi }}</td>
                                     </tr>
                                 </table>
-                                <a href="{{ route('obat.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('backend.obat.index') }}" class="btn btn-primary">Kembali</a>
                             </div>
                         </div>
                     </div>

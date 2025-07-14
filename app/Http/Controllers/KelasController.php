@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Kelas;
+use App\Models\LogAktivitas;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -28,8 +30,10 @@ class KelasController extends Controller
         $kelas->save();
 
         logAktivitas("Menambahkan kelas bernama {$kelas->nama_kelas}", 'kelas');
+        Alert::success('Sukses', 'berhasil ditambahkan!');
+        return redirect()->route('backend.kelas.index');
 
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil ditambahkan');
+        // return redirect()->route('backend.kelas.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function show(string $id)
@@ -58,7 +62,7 @@ class KelasController extends Controller
 
         logAktivitas("Mengubah kelas menjadi {$kelas->nama_kelas}", 'kelas');
 
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('backend.kelas.index')->with('success', 'Data berhasil diubah');
     }
 
     public function destroy(string $id)
@@ -70,6 +74,6 @@ class KelasController extends Controller
 
         logAktivitas("Menghapus kelas bernama {$nama}", 'kelas');
 
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('backend.kelas.index')->with('success', 'Data berhasil dihapus');
     }
 }

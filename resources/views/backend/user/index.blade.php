@@ -42,16 +42,19 @@
                                                 @endif
                                             </td>
                                             <td>{{ ucfirst($user->role) }}</td>
-                                            {{-- <td>
-
-                                                <form action="{{ route('backend.user.destroy', $user->id) }}" method="POST"
-                                                    style="display: inline-block;"
-                                                    onsubmit="return confirm('Yakin hapus user ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                                </form>
-                                            </td> --}}
+                                            <td>
+                                                @if ($user->role !== 'admin')
+                                                    <form action="{{ route('backend.user.destroy', $user->id) }}"
+                                                        method="POST" style="display: inline-block;"
+                                                        onsubmit="return confirm('Yakin hapus user ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-muted fst-italic">Tidak bisa dihapus</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

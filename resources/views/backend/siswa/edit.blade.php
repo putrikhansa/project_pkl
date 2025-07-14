@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Ubah Data Siswa</div>
                     <div class="card-body">
-                        <form action="{{ route('siswa.update', $siswa->id) }}" method="POST">
+                        <form action="{{ route('backend.siswa.update', $siswa->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -61,7 +61,7 @@
                             {{-- Tombol --}}
                             <div class="card-action">
                                 <button class="btn btn-info" style="float: right" type="submit">Ubah</button>
-                                <a href="{{ route('siswa.index') }}" class=""><i class="flaticon-back"></i></a>
+                                <a href="{{ route('backend.siswa.index') }}" class=""><i class="flaticon-back"></i></a>
                             </div>
 
                         </form>

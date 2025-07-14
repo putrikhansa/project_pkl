@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalPemeriksaan;
+use App\Models\LogAktivitas;
 use App\Models\Kelas;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -40,7 +41,7 @@ class JadwalPemeriksaanController extends Controller
 
         logAktivitas("Menambahkan jadwal pemeriksaan untuk kelas ID {$jadwal->kelas_id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
 
-        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil disimpan.');
+        return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil disimpan.');
     }
 
     public function show(string $id)
@@ -77,7 +78,7 @@ class JadwalPemeriksaanController extends Controller
 
         logAktivitas("Mengedit jadwal pemeriksaan ID {$jadwal->id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
 
-        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function destroy(string $id)
@@ -89,7 +90,7 @@ class JadwalPemeriksaanController extends Controller
 
         logAktivitas("Menghapus jadwal pemeriksaan pada {$tanggal}", 'jadwal_pemeriksaan');
 
-        return redirect()->route('jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 
     public function laporan(Request $request)
@@ -122,4 +123,6 @@ class JadwalPemeriksaanController extends Controller
 
         return $pdf->download('laporan-jadwal-pemeriksaan.pdf');
     }
+
+    
 }

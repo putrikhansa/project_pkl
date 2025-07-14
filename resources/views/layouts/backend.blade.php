@@ -38,6 +38,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/css/jquery.mCustomScrollbar.css') }}">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -174,6 +175,7 @@
         <script src="{{ asset('assets/backend/js/vertical/vertical-layout.min.js') }} "></script>
 
         <script type="text/javascript" src="{{ asset('assets/backend/js/script.js') }} "></script>
+        @include('sweetalert::alert')
 
         @stack('scripts')
 </body>

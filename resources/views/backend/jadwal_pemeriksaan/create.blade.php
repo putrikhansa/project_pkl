@@ -8,7 +8,8 @@
                         Tambah jadwal pemeriksaan
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('jadwal_pemeriksaan.store') }}" method="POST">
+                        <label for="tanggal">Tanggal</label>
+                        <form action="{{ route('backend.jadwal_pemeriksaan.store') }}" method="POST">
                             @csrf
                             <input type="date" name="tanggal" class="form-control @error('tanggal') is-invalid @enderror"
                                 value="{{ old('tanggal') }}">

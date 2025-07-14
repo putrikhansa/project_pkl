@@ -42,7 +42,7 @@ class SiswaController extends Controller
 
         logAktivitas("Menambahkan siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
+        return redirect()->route('backend.siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
     public function show(string $id)
@@ -77,7 +77,7 @@ class SiswaController extends Controller
 
         logAktivitas("Mengedit data siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil diperbarui');
+        return redirect()->route('backend.siswa.index')->with('success', 'Siswa berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -89,7 +89,7 @@ class SiswaController extends Controller
 
         logAktivitas("Menghapus siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('siswa.index')->with('success', 'Siswa dan data terkait berhasil dihapus');
+        return redirect()->route('backend.siswa.index')->with('success', 'Siswa dan data terkait berhasil dihapus');
     }
 
     public function search(Request $request)
@@ -122,15 +122,15 @@ class SiswaController extends Controller
 }
 
 // Helper logAktivitas tanpa data_id
-if (! function_exists('logAktivitas')) {
-    function logAktivitas($aksi, $tabel = null)
-    {
-        if (auth()->check()) {
-            LogAktivitas::create([
-                'user_id' => auth()->id(),
-                'aksi'    => $aksi,
-                'tabel'   => $tabel,
-            ]);
-        }
-    }
-}
+// if (! function_exists('logAktivitas')) {
+//     function logAktivitas($aksi, $tabel = null)
+//     {
+//         if (auth()->check()) {
+//             LogAktivitas::create([
+//                 'user_id' => auth()->id(),
+//                 'aksi'    => $aksi,
+//                 'tabel'   => $tabel,
+//             ]);
+//         }
+//     }
+// }

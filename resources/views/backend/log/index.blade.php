@@ -10,7 +10,7 @@
                     <tr>
                         <th>#</th>
                         <th>Waktu</th>
-                        <th>Petugas</th> {{-- Kolom baru --}}
+                        <th>User</th> {{-- Kolom baru --}}
                         <th>Aksi</th>
                         <th>Tabel</th>
                     </tr>

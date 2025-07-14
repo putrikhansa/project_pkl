@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         Data jadwal pemeriksaan
-                        <a href="{{ route('jadwal_pemeriksaan.create') }}" class="btn btn-secondary btn-sm"
+                        <a href="{{ route('backend.jadwal_pemeriksaan.create') }}" class="btn btn-secondary btn-sm"
                             style="color:white; float: right;">
                             Tambah
                         </a>
@@ -39,11 +39,11 @@
                                             <td>{{ $data->keterangan }}</td>
 
                                             <td>
-                                                <a href="{{ route('jadwal_pemeriksaan.show', $data->id) }}"
+                                                <a href="{{ route('backend.jadwal_pemeriksaan.show', $data->id) }}"
                                                     class="btn btn-info btn-sm">Show</a>
-                                                <a href="{{ route('jadwal_pemeriksaan.edit', $data->id) }}"
+                                                <a href="{{ route('backend.jadwal_pemeriksaan.edit', $data->id) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('jadwal_pemeriksaan.destroy', $data->id) }}"
+                                                <form action="{{ route('backend.jadwal_pemeriksaan.destroy', $data->id) }}"
                                                     method="POST" style="display:inline;"
                                                     onsubmit="return confirm('yakin ingin menghapus jadwal_pemeriksaan ini?')">
                                                     @csrf

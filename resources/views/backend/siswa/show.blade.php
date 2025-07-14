@@ -24,7 +24,7 @@
                                         <td>{{ $siswa->jenis_kelamin }}</td>
                                     </tr>
                                 </table>
-                                <a href="{{ route('siswa.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('backend.siswa.index') }}" class="btn btn-primary">Kembali</a>
                             </div>
                         </div>
                     </div>

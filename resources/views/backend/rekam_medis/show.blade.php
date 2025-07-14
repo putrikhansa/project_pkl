@@ -37,7 +37,7 @@
                                     </tr>
 
                                 </table>
-                                <a href="{{ route('rekam_medis.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('backend.rekam_medis.index') }}" class="btn btn-primary">Kembali</a>
                             </div>
                         </div>
                     </div>
