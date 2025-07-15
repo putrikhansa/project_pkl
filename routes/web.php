@@ -99,6 +99,7 @@ Route::middleware(['auth'])->prefix('backend')->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::resource('users', UserController::class);
 });
+Route::get('/get-siswa-by-kelas/{kelas_id}', [RekamMedisController::class, 'getSiswaByKelas']);
 
 /*
 | Admin Prefix

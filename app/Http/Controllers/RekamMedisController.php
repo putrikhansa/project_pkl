@@ -2,8 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RekamMedisExport;
+use App\Models\Kelas;
 use App\Models\Obat;
-use App\Models\RekamMedis;
+use App\Models\RekamMedis; // pastikan sudah di-`use`
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,11 +20,10 @@ class RekamMedisController extends Controller
 
     public function create()
     {
-        $siswa = Siswa::all();
-        $users = User::all();
-        $obat  = Obat::all();
+        $kelas = Kelas::all(); // untuk dropdown kelas
+        $obat  = Obat::all();  // untuk dropdown obat
 
-        return view('backend.rekam_medis.create', compact('siswa', 'users', 'obat'));
+        return view('backend.rekam_medis.create', compact('kelas', 'obat'));
     }
 
     public function store(Request $request)
@@ -38,7 +38,6 @@ class RekamMedisController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
-
 
         $tindakan = 'Pemeriksaan';
 
@@ -75,8 +74,9 @@ class RekamMedisController extends Controller
         $siswa       = Siswa::with('user')->get();
         $users       = User::all();
         $obat        = Obat::all();
+        $kelas       = Kelas::all(); // ✅ tambah ini
 
-        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat'));
+        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat', 'kelas'));
     }
 
     public function update(Request $request, string $id)
@@ -111,6 +111,12 @@ class RekamMedisController extends Controller
         logAktivitas("Menghapus rekam medis siswa {$nama} tanggal {$tanggal}", 'rekam_medis');
 
         return redirect()->route('backend.rekam_medis.index')->with('success', 'Rekam medis berhasil dihapus');
+    }
+
+    public function getSiswaByKelas($kelas_id)
+    {
+        $siswas = Siswa::where('kelas_id', $kelas_id)->get(['id', 'nama']);
+        return response()->json($siswas);
     }
 
     public function laporan(Request $request)
