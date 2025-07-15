@@ -57,15 +57,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="user_id">Pilih Petugas</label>
-                                <select name="user_id" class="form-control">
-                                    <option value="">-- Pilih Petugas --</option>
-                                    @foreach ($users as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                           <div class="mb-3">
+    <label for="">Petugas</label>
+    <input type="text" class="form-control" value="{{ auth()->user()->name }}" readonly>
+</div>
+
                             <div class="mb-2">
                                 <label for="">status </label>
                                 <input type="text" name="status"

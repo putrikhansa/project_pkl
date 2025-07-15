@@ -9,9 +9,12 @@ class LogAktivitasController extends Controller
     {
         
         // Ambil semua log aktivitas dengan relasi user
-        $logs = LogAktivitas::with('user')->latest()->paginate(20);
 
-        // Kirim ke view blade
-        return view('backend.log.index', compact('logs'));
+    // Ambil log aktivitas dan relasi user-nya
+    $logs = LogAktivitas::with('user')->latest()->paginate(10);
+
+    return view('backend.log.index', compact('logs'));
+
+
     }
 }

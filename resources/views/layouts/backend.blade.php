@@ -106,9 +106,10 @@
                 <nav class="pcoded-navbar">
                     @include('layouts.components-backend.sidebar')
                 </nav>
-                <div class="pcoded-content">
+                <div class="pcoded-content" style="min-height: 500px; padding: 2rem;">
                     @yield('content')
                 </div>
+
 
             </div>
         </div>

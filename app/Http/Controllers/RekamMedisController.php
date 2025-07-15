@@ -33,9 +33,12 @@ class RekamMedisController extends Controller
             'tanggal'  => 'required|date',
             'keluhan'  => 'required|string',
             'obat_id'  => 'nullable|exists:obats,id',
-            'user_id'  => 'required|exists:users,id',
+            // 'user_id'  => 'required|exists:users,id',
             'status'   => 'required|string',
         ]);
+
+        $validated['user_id'] = auth()->id();
+
 
         $tindakan = 'Pemeriksaan';
 

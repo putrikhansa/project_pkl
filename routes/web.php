@@ -17,41 +17,36 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
+
 | Front Routes
-|--------------------------------------------------------------------------
+
 */
 Route::get('/', [FrontController::class, 'index']);
 Route::get('/welcome', [FrontController::class, 'index'])->name('welcome');
 
 /*
-|--------------------------------------------------------------------------
+
 | Authentication & Home
-|--------------------------------------------------------------------------
 */
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
 
 /*
-|--------------------------------------------------------------------------
-| Public Utilities
-|--------------------------------------------------------------------------
+
 */
 // Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
 
 /*
-|--------------------------------------------------------------------------
+
 | Dashboard Access
-|--------------------------------------------------------------------------
 */
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 Route::get('/petugas', [AdminController::class, 'index'])->name('petugas.dashboard');
 
 /*
-|--------------------------------------------------------------------------
 | Export & Laporan Routes
-|--------------------------------------------------------------------------
+
 */
 Route::get('/rekam-medis/export/pdf', function (\Illuminate\Http\Request $request) {
     $awal  = $request->tanggal_awal;
@@ -66,9 +61,7 @@ Route::get('/rekam-medis/export/pdf', function (\Illuminate\Http\Request $reques
 })->name('rekam_medis.export.pdf');
 
 /*
-|--------------------------------------------------------------------------
-| Backend (Petugas/Admin) - With Role Middleware
-|--------------------------------------------------------------------------
+
 */
 Route::middleware(['auth'])->prefix('backend')->group(function () {
 
@@ -101,18 +94,14 @@ Route::middleware(['auth'])->prefix('backend')->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------
 | Admin-Only Routes (Optional - AdminMiddleware)
-|--------------------------------------------------------------------------
 */
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::resource('users', UserController::class);
 });
 
 /*
-|--------------------------------------------------------------------------
-| Admin Prefixed Routes (Main Admin Area)
-|--------------------------------------------------------------------------
+| Admin Prefix
 */
 Route::middleware(['auth'])->prefix('backend')->group(function () {
 

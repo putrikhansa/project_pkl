@@ -1,4 +1,4 @@
-@extends('layouts.backend') {{-- ganti sesuai layout kamu --}}
+@extends('layouts.backend')
 
 @section('content')
     <div class="container mt-4">
@@ -10,7 +10,7 @@
                     <tr>
                         <th>#</th>
                         <th>Waktu</th>
-                        <th>User</th> {{-- Kolom baru --}}
+                        <th>User</th>
                         <th>Aksi</th>
                         <th>Tabel</th>
                     </tr>
@@ -18,7 +18,7 @@
                 <tbody>
                     @forelse ($logs as $log)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($logs->currentPage() - 1) * $logs->perPage() + $loop->iteration }}</td>
                             <td>{{ $log->created_at->format('d M Y H:i') }}</td>
                             <td>{{ $log->user->name ?? '-' }}</td>
                             <td>{{ $log->aksi }}</td>
@@ -26,11 +26,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada aktivitas tercatat.</td>
+                            <td colspan="5" class="text-center">Belum ada aktivitas tercatat.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+
+            {{-- Pagination --}}
+            <div class="mt-3">
+                {{ $logs->links() }}
+            </div>
         </div>
     </div>
 @endsection
