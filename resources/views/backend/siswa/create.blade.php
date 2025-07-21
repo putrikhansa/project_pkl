@@ -1,4 +1,9 @@
 @extends('layouts.backend')
+
+@section('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
+@endsection
+
 @section('content')
     <div class="container-fluid py-4">
         <div class="row justify-content-center">

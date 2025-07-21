@@ -43,7 +43,7 @@
                                 <td>{{ $item->keluhan }}</td>
                                 <td>
                                     <span
-                                        class="badge badge-status {{ $item->status === 'Pulang' ? 'bg-success' : 'bg-danger' }}">
+                                        class="badge badge-status {{ $item->status === 'Pulang' ? 'bg-danger' : 'bg-success' }}">
                                         {{ ucfirst($item->status) }}
                                     </span>
                                 </td>

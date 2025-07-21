@@ -44,7 +44,7 @@
                                             <td>{{ $data->user->name }}</td>
                                             <td>
                                                 <span
-                                                    class="badge badge-status {{ $data->status === 'Pulang' ? 'bg-success' : 'bg-danger' }}">
+                                                    class="badge badge-status {{ $data->status === 'Pulang' ? 'bg-danger' : 'bg-success' }}">
                                                     {{ ucfirst($data->status) }}
                                                 </span>
                                             </td>
@@ -52,8 +52,8 @@
 
 
                                             <td>
-                                                <a href="{{ route('backend.rekam_medis.show', $data->id) }}"
-                                                    class="btn btn-info btn-sm"><i class='bx bx-show'></i></a>
+                                                <!-- <a href="{{ route('backend.rekam_medis.show', $data->id) }}"
+                                                    class="btn btn-info btn-sm"><i class='bx bx-show'></i></a> -->
                                                 <a href="{{ route('backend.rekam_medis.edit', $data->id) }}"
                                                     class="btn btn-success btn-sm"><i class='bx bx-edit'></i></a>
                                                 <form action="{{ route('backend.rekam_medis.destroy', $data->id) }}"

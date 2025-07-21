@@ -118,34 +118,34 @@
     </section><!-- /About Section -->
 
     <!-- Stats Section -->
-    <section id="stats" class="stats section light-background">
+    <!-- <section id="stats" class="stats section light-background">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
             <div class="row gy-4">
 
 
                 <!-- Tambahan: Kunjungan -->
-                <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+                <!-- <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="fas fa-notes-medical"></i>
                     <div class="stats-item">
                         <span data-purecounter-start="0" data-purecounter-end="{{ $jumlahKunjungan }}"
                             data-purecounter-duration="1" class="purecounter"></span>
                         <p>Total Kunjungan</p>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Tambahan: Obat -->
-                <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+                <!-- <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="fas fa-capsules"></i>
                     <div class="stats-item">
                         <span data-purecounter-start="0" data-purecounter-end="{{ $jumlahObat }}"
                             data-purecounter-duration="1" class="purecounter"></span>
                         <p>Jumlah Obat</p>
                     </div>
-                </div>
+                </div> -->
 
-            </div>
+            <!-- </div>
         </div>
-    </section>
+    </section> -->
     <!-- /Stats Section -->
 
     <!-- Services Section -->
@@ -392,14 +392,14 @@
     </section><!-- /Departments Section -->
 
     <!-- Doctors Section -->
-    <section id="doctors" class="doctors section">
+    <!-- <section id="doctors" class="doctors section"> -->
         <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
+        <!-- <div class="container section-title" data-aos="fade-up">
             <h2>Petugas</h2>
             <p>Petugas UKS yang siap melayani kebutuhan kesehatan siswa di sekolah.</p>
-        </div><!-- End Section Title -->
+        </div>End Section Title -->
 
-        <div class="container">
+        <!-- <div class="container">
             <div class="row gy-4">
 
                 @forelse ($users as $index => $user)
@@ -429,9 +429,9 @@
                 @endforelse
 
             </div>
-        </div>
-    </section>
-    {{-- !-- /Doctors Section --> --}}
+        <!-- </div> -->
+    <!-- </section> -->
+    {{-- !-- /Doctors Section --> --}} -->
 
     <!-- Faq Section -->
     <section id="faq" class="faq section light-background">

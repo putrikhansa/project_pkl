@@ -7,9 +7,12 @@
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         Data Siswa
-                        <a href="{{ route('backend.siswa.create') }}" class="btn btn-secondary btn-sm float-right">
-                            Tambah
-                        </a>
+                        @if (auth()->user()->role === 'petugas')
+                            <a href="{{ route('backend.siswa.create') }}" class="btn btn-secondary btn-sm float-right">
+                                Tambah
+                            </a>
+                        @endif
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -19,11 +22,8 @@
                                     <option value="{{ $kelas->nama_kelas }}">{{ $kelas->nama_kelas }}</option>
                                 @endforeach
                             </select> --}}
-                            <!-- ✅ Kolom Pencarian -->
                             <input type="text" id="search-input" class="form-control mb-3"
                                 placeholder="Cari nama siswa atau kelas...">
-
-                            <!-- ✅ Tabel Data -->
                             <table class="table" id="datasiswa">
                                 <thead class="text-dark">
                                     <tr>

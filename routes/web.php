@@ -21,13 +21,16 @@ use Illuminate\Support\Facades\Route;
 | Front Routes
 
 */
-Route::get('/', [FrontController::class, 'index']);
+// Route::get('/', [FrontController::class, 'index']);
 Route::get('/welcome', [FrontController::class, 'index'])->name('welcome');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 /*
 
 | Authentication & Home
-*/
+*/  
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
 

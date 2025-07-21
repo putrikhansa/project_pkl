@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Exports\RekamMedisExport;
 use App\Models\Kelas;
 use App\Models\Obat;
-use App\Models\RekamMedis; // pastikan sudah di-`use`
+use App\Models\RekamMedis;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,8 +20,8 @@ class RekamMedisController extends Controller
 
     public function create()
     {
-        $kelas = Kelas::all(); // untuk dropdown kelas
-        $obat  = Obat::all();  // untuk dropdown obat
+        $kelas = Kelas::all(); 
+        $obat  = Obat::all();  
 
         return view('backend.rekam_medis.create', compact('kelas', 'obat'));
     }
@@ -74,7 +74,7 @@ class RekamMedisController extends Controller
         $siswa       = Siswa::with('user')->get();
         $users       = User::all();
         $obat        = Obat::all();
-        $kelas       = Kelas::all(); // ✅ tambah ini
+        $kelas       = Kelas::all(); 
 
         return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat', 'kelas'));
     }

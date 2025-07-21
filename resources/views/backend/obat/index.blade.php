@@ -9,15 +9,15 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-header bg-primary">
-                        Data obat
-                        <a href="{{ route('backend.obat.create') }}" class="btn btn-secondary btn-sm" style="color:white; float: right;">
+                    <div class="card-header bg-primary text-white">
+                        Data Obat
+                        <a href="{{ route('backend.obat.create') }}" class="btn btn-secondary btn-sm float-right">
                             Tambah
                         </a>
                     </div>
                     <div class="card-body">
                         <div class="table table-responsive">
-                            <table class="table" id="dataobat">
+                            <table class="table" id="itemobat">
                                 <thead class="text-dark">
                                     <tr>
                                         <th>No</th>
@@ -31,27 +31,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($obat as $data)
+                                    @foreach ($obat as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $data->nama_obat }}</td>
-                                            <td>{{ $data->kategori }}</td>
-                                            <td>{{ $data->stok }}</td>
-                                            <td>{{ $data->tanggal_kadaluarsa }}</td>
-                                            <td>{{ $data->unit }}</td>
-                                            <td>{{ $data->deskripsi }}</td>
-
+                                            <td>{{ $item->nama_obat }}</td>
+                                            <td>{{ $item->kategori }}</td>
                                             <td>
-                                                <a href="{{ route('backend.obat.show', $data->id) }}"
-                                                    class="btn btn-info btn-sm">Show</a>
-                                                    <a href="{{ route('backend.obat.edit', $data->id) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
-                                                <form action="{{ route('backend.obat.destroy', $data->id) }}" method="POST"
-                                                    style="display:inline;"
+                                                @if ($item->stok == 0)
+                                                    <span class="badge bg-danger">Stok Habis</span>
+                                                @elseif ($item->stok < 5)
+                                                    <span class="badge bg-warning text-dark">Sisa {{ $item->stok }}</span>
+                                                @else
+                                                    {{ $item->stok }}
+                                                @endif
+                                            </td>
+                                            <td>{{ $item->tanggal_kadaluarsa }}</td>
+                                            <td>{{ $item->unit }}</td>
+                                            <td>{{ $item->deskripsi }}</td>
+                                            <td>
+                                                <a href="{{ route('backend.obat.show', $item->id) }}"
+                                                    class="btn btn-info btn-sm"><i class='bx bx-show'></i></a>
+                                                <a href="{{ route('backend.obat.edit', $item->id) }}"
+                                                    class="btn btn-success btn-sm"><i class='bx bx-edit'></i></a>
+                                                <form action="{{ route('backend.obat.destroy', $item->id) }}"
+                                                    method="POST" style="display:inline;"
                                                     onsubmit="return confirm('yakin ingin menghapus obat ini?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm">Hapus</button>
+                                                    <button class="btn btn-danger btn-sm"><i class='bx bx-trash'></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -69,4 +76,9 @@
 @push('scripts')
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#itemobat').DataTable();
+        });
+    </script>
 @endpush

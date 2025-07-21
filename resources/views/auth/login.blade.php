@@ -75,7 +75,7 @@
                                 </div>
 
                                 <hr />
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-10">
                                         <p class="text-inverse text-left m-b-0">Thank you.</p>
                                         <p class="text-inverse text-left">
@@ -86,7 +86,7 @@
                                         <img src="{{ asset('assets/backend/images/auth/Logo-small-bottom.png') }}"
                                             alt="small-logo.png">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </form>
