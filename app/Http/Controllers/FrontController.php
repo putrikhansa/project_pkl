@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\EdukasiKesehatan;
+use App\Models\JadwalPemeriksaan;
 use App\Models\Obat;
 use App\Models\RekamMedis;
+use App\Models\User;
 
 class FrontController extends Controller
 {
@@ -13,7 +15,21 @@ class FrontController extends Controller
         $jumlahKunjungan = RekamMedis::count();
         $jumlahObat      = Obat::count();
 
-        return view('welcome', compact('users', 'jumlahKunjungan', 'jumlahObat'));
+        $jadwal = JadwalPemeriksaan::with(['kelas', 'user'])
+            ->orderBy('tanggal', 'asc')
+            ->get();
 
+        $edukasi = EdukasiKesehatan::where('status', 'publish')
+            ->whereDate('tanggal_publish', '<=', now())
+            ->latest()
+            ->get();
+
+        return view('welcome', compact(
+            'users',
+            'jumlahKunjungan',
+            'jumlahObat',
+            'jadwal',
+            'edukasi'
+        ));
     }
 }

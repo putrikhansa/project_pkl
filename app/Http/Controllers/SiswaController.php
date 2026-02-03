@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
-use App\Models\LogAktivitas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
@@ -13,8 +12,8 @@ class SiswaController extends Controller
         $kelasList = Kelas::all();
 
         $siswas = auth()->user()->role === 'petugas'
-        ? Siswa::with('kelas')->where('user_id', auth()->id())->get()
-        : Siswa::with('kelas')->get();
+            ? Siswa::with(['kelas', 'user'])->where('user_id', auth()->id())->get()
+            : Siswa::with(['kelas', 'user'])->get();
 
         return view('backend.siswa.index', compact('siswas', 'kelasList'));
     }
@@ -25,15 +24,20 @@ class SiswaController extends Controller
         return view('backend.siswa.create', compact('kelas'));
     }
 
+    // =======================
+    // STORE (FIX TOTAL)
+    // =======================
     public function store(Request $request)
     {
         $request->validate([
-            'nama'          => 'required|string',
-            'kelas_id'      => 'required|exists:kelas,id',
-            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+            'nis'           => 'required|unique:siswas,nis',
+            'nama'          => 'required',
+            'kelas_id'      => 'required',
+            'jenis_kelamin' => 'required',
         ]);
 
         $siswa = Siswa::create([
+            'nis'           => $request->nis,
             'nama'          => $request->nama,
             'kelas_id'      => $request->kelas_id,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -42,12 +46,14 @@ class SiswaController extends Controller
 
         logAktivitas("Menambahkan siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('backend.siswa.index')->with('success', 'Siswa berhasil ditambahkan');
+        return redirect()
+            ->route('backend.siswa.index')
+            ->with('success', 'Siswa berhasil ditambahkan');
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        $siswa = Siswa::with('kelas')->findOrFail($id);
+        $siswa = Siswa::with(['kelas', 'user'])->findOrFail($id);
         return view('backend.siswa.show', compact('siswa'));
     }
 
@@ -59,17 +65,22 @@ class SiswaController extends Controller
         return view('backend.siswa.edit', compact('siswa', 'kelas'));
     }
 
+    // =======================
+    // UPDATE (FIX BENAR)
+    // =======================
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama'          => 'required|string',
-            'kelas_id'      => 'required|exists:kelas,id',
-            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-        ]);
-
         $siswa = Siswa::findOrFail($id);
 
+        $request->validate([
+            'nis'           => 'required|unique:siswas,nis,' . $siswa->id,
+            'nama'          => 'required',
+            'kelas_id'      => 'required',
+            'jenis_kelamin' => 'required',
+        ]);
+
         $siswa->update([
+            'nis'           => $request->nis,
             'nama'          => $request->nama,
             'kelas_id'      => $request->kelas_id,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -77,40 +88,44 @@ class SiswaController extends Controller
 
         logAktivitas("Mengedit data siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('backend.siswa.index')->with('success', 'Siswa berhasil diperbarui');
+        return redirect()
+            ->route('backend.siswa.index')
+            ->with('success', 'Siswa berhasil diperbarui');
     }
 
     public function destroy($id)
     {
         $siswa = Siswa::findOrFail($id);
 
-        $siswa->rekam_medis()->delete();
+        if (method_exists($siswa, 'rekam_medis')) {
+            $siswa->rekam_medis()->delete();
+        }
+
         $siswa->delete();
 
         logAktivitas("Menghapus siswa bernama {$siswa->nama}", 'siswa');
 
-        return redirect()->route('backend.siswa.index')->with('success', 'Siswa dan data terkait berhasil dihapus');
+        return redirect()
+            ->route('backend.siswa.index')
+            ->with('success', 'Siswa berhasil dihapus');
     }
 
+    // =======================
+    // SEARCH (BONUS RAPi)
+    // =======================
     public function search(Request $request)
     {
         $keyword = $request->keyword;
-        $kelas   = $request->kelas;
 
         $query = Siswa::with('kelas');
 
         if ($keyword) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('nama', 'like', "%$keyword%")
+                    ->orWhere('nis', 'like', "%$keyword%")
                     ->orWhereHas('kelas', function ($q2) use ($keyword) {
                         $q2->where('nama_kelas', 'like', "%$keyword%");
                     });
-            });
-        }
-
-        if ($kelas) {
-            $query->whereHas('kelas', function ($q) use ($kelas) {
-                $q->where('nama', $kelas);
             });
         }
 

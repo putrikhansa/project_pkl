@@ -11,6 +11,15 @@
                             @csrf
                             @method('PUT')
 
+                            {{-- NIS --}}
+                            <div class="mb-3">
+                                <label for="nis">NIS</label>
+                                <input type="text" name="nis" class="form-control @error('nis') is-invalid @enderror"
+                                    value="{{ old('nis', $siswa->nis) }}" readonly>
+                                @error('nis')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             {{-- Nama --}}
                             <div class="mb-3">
                                 <label for="nama">Nama</label>
@@ -61,7 +70,8 @@
                             {{-- Tombol --}}
                             <div class="card-action">
                                 <button class="btn btn-info" style="float: right" type="submit">Ubah</button>
-                                <a href="{{ route('backend.siswa.index') }}" class=""><i class="flaticon-back"></i></a>
+                                <a href="{{ route('backend.siswa.index') }}" class=""><i
+                                        class="flaticon-back"></i></a>
                             </div>
 
                         </form>

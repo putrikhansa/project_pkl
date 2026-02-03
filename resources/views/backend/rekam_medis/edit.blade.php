@@ -1,4 +1,5 @@
 @extends('layouts.backend')
+
 @section('content')
     <div class="container-fluid py-4">
         <div class="row justify-content-center">
@@ -35,28 +36,32 @@
                             {{-- Tanggal --}}
                             <div class="mb-3">
                                 <label for="tanggal">Tanggal</label>
-                                <input type="date" name="tanggal" class="form-control" value="{{ $rekam_medis->tanggal }}" required>
+                                <input type="date" name="tanggal" class="form-control"
+                                    value="{{ $rekam_medis->tanggal }}" required>
                             </div>
 
                             {{-- Keluhan --}}
                             <div class="mb-3">
                                 <label for="keluhan">Keluhan</label>
-                                <input type="text" name="keluhan" class="form-control" value="{{ $rekam_medis->keluhan }}" required>
+                                <input type="text" name="keluhan" class="form-control"
+                                    value="{{ $rekam_medis->keluhan }}" required>
                             </div>
 
                             {{-- Tindakan --}}
                             <div class="mb-3">
                                 <label for="tindakan">Tindakan</label>
-                                <input type="text" name="tindakan" class="form-control" value="{{ $rekam_medis->tindakan }}" required>
+                                <input type="text" name="tindakan" class="form-control"
+                                    value="{{ $rekam_medis->tindakan }}" required>
                             </div>
 
                             {{-- Obat --}}
                             <div class="mb-3">
                                 <label for="obat_id">Obat</label>
                                 <select name="obat_id" class="form-control">
-                                    <option value="">-- Pilih Obat --</option>
+                                    <option value="">-- Tanpa Obat --</option>
                                     @foreach ($obat as $item)
-                                        <option value="{{ $item->id }}" {{ $rekam_medis->obat_id == $item->id ? 'selected' : '' }}>
+                                        <option value="{{ $item->id }}"
+                                            {{ $rekam_medis->obat_id == $item->id ? 'selected' : '' }}>
                                             {{ $item->nama_obat }} (Stok: {{ $item->stok }})
                                         </option>
                                     @endforeach
@@ -68,22 +73,32 @@
                                 <label for="user_id">Petugas</label>
                                 <select name="user_id" class="form-control" required>
                                     @foreach ($users as $u)
-                                        <option value="{{ $u->id }}" {{ $rekam_medis->user_id == $u->id ? 'selected' : '' }}>
+                                        <option value="{{ $u->id }}"
+                                            {{ $rekam_medis->user_id == $u->id ? 'selected' :  '' }}>
                                             {{ $u->name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            {{-- Status --}}
+                            {{-- Status (Diedit menjadi Select) --}}
                             <div class="mb-3">
                                 <label for="status">Status</label>
-                                <input type="text" name="status" class="form-control" value="{{ $rekam_medis->status }}" required>
+                                <select name="status" class="form-control" required>
+                                    <option value="Kembali Ke Kelas"
+                                        {{ $rekam_medis->status == 'Kembali Ke Kelas' ? 'selected' : '' }}>Kembali Ke Kelas
+                                    </option>
+                                    <option value="Di UKS" {{ $rekam_medis->status == 'Di UKS' ? 'selected' : '' }}>Di UKS
+                                    </option>
+                                    <option value="Pulang" {{ $rekam_medis->status == 'Pulang' ? 'selected' : '' }}>Pulang
+                                    </option>
+                                </select>
                             </div>
 
-                            <div class="mb-2">
-                                <button type="submit" class="btn btn-outline-primary btn-sm">Simpan</button>
-                                <a href="{{ route('backend.rekam_medis.index') }}" class="btn btn-outline-secondary btn-sm">Kembali</a>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary btn-sm">Simpan Perubahan</button>
+                                <a href="{{ route('backend.rekam_medis.index') }}"
+                                    class="btn btn-secondary btn-sm">Kembali</a>
                             </div>
                         </form>
                     </div>
@@ -92,24 +107,38 @@
         </div>
     </div>
 
-    {{-- Script AJAX --}}
     @push('scripts')
         <script>
-            document.getElementById('kelasSelect').addEventListener('change', function () {
+            document.getElementById('kelasSelect').addEventListener('change', function() {
                 var kelasId = this.value;
                 var siswaSelect = document.getElementById('siswaSelect');
+
+                if (!kelasId) {
+                    siswaSelect.innerHTML = '<option value="">-- Pilih Siswa --</option>';
+                    return;
+                }
+
                 siswaSelect.innerHTML = '<option>Memuat data...</option>';
 
-                fetch('/get-siswa-by-kelas/' + kelasId)
+                // Gunakan URL yang fleksibel (menghindari error path di server/local)
+                fetch("{{ url('backend/get-siswa-by-kelas') }}/" + kelasId)
                     .then(response => response.json())
                     .then(data => {
                         siswaSelect.innerHTML = '<option value="">-- Pilih Siswa --</option>';
-                        data.forEach(function (siswa) {
+                        data.forEach(function(siswa) {
                             var option = document.createElement('option');
                             option.value = siswa.id;
                             option.text = siswa.nama;
+                            // Jika ingin otomatis select siswa yang lama saat ganti kelas (opsional)
+                            if (siswa.id == "{{ $rekam_medis->siswa_id }}") {
+                                option.selected = true;
+                            }
                             siswaSelect.appendChild(option);
                         });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        siswaSelect.innerHTML = '<option value="">Gagal memuat data</option>';
                     });
             });
         </script>

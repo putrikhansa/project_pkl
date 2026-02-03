@@ -20,8 +20,6 @@
                                             <input type="text" name="nama" class="form-control"
                                                 value="{{ $users->nama }}" required>
                                         </div>
-                                       ect>
-                                        </div>
                                         <div class="mb-2">
                                             <label for="">No Hp </label>
                                             <input type="text" name="no_hp" class="form-control"

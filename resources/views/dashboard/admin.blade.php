@@ -1,128 +1,149 @@
 @extends('layouts.backend')
 
 @section('content')
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="page-header-title">
-                        <h5 class="m-b-10">Welcome  {{ auth()->user()->name}} Hiiii</h5>
-                        <p class="mb-4">
-                            {{ auth()->user()->role === 'admin'
-                                ? 'Kamu sudah berhasil mengatur sistem dan akun dengan baik. Terima kasih Admin!'
-                                : 'Kamu berhasil masuk dan siap melayani siswa hari ini. Semangat, Petugas!' }}
-                        </p>
+    <style>
+        /* Styling tambahan agar card statistik lebih "pop-up" */
+        .total-card {
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            border: none;
+        }
+
+        .total-card:hover {
+            transform: translateY(-5)px;
+        }
+
+        .card-block h4 {
+            font-weight: 700;
+            font-size: 24px;
+        }
+    </style>
+
+    <div class="container-fluid py-4">
+        {{-- HEADER (Gaya Biru Examify) --}}
+        <div class="mb-4">
+            <div class="card border-0 shadow-sm"
+                style="background: linear-gradient(135deg, #3f87f5, #4c9aff); border-radius: 20px;">
+                <div class="card-body px-4 py-4 text-white">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="fw-bold mb-1">
+                                Selamat Datang, {{ auth()->user()->name }} 👋
+                            </h3>
+                            <p class="mb-2 opacity-75">
+                                @if (auth()->user()->role === 'admin')
+                                    Anda memiliki akses penuh untuk mengelola sistem **UKS Digital**.
+                                @else
+                                    Anda login sebagai <b>Petugas</b>. Mari berikan layanan kesehatan terbaik hari ini.
+                                @endif
+                            </p>
+                            {{-- <div class="d-flex align-items-center gap-2 opacity-75">
+                                <i class="fa fa-home"></i>
+                                <span>Dashboard Utama</span>
+                            </div> --}}
+                        </div>
+                        <div class="col-md-4 text-end d-none d-md-block">
+                            <i class="fa fa-desktop" style="font-size: 60px; opacity: 0.2;"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('welcome') }}"> <i class="fa fa-home"></i> </a>
-                        </li>
-                        <li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
-                    </ul>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="pcoded-inner-content">
-        <div class="main-body">
-            <div class="page-wrapper">
-                <div class="page-body">
-                    <div class="row">
-                        <!-- Total Kunjungan -->
-                        <div class="col-md-6">
-                            <div class="card bg-c-red total-card">
-                                <div class="card-block">
-                                    <div class="text-left">
-                                        <h4>{{ $totalKunjungan }}</h4>
-                                        <p class="m-0">Total Kunjungan</p>
-                                    </div>
-                                </div>
-                            </div>
+        {{-- CARD STATISTIK --}}
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-c-red text-white total-card shadow-sm">
+                    <div class="card-block p-4 text-center">
+                        <i class="ti-direction-alt f-30 m-b-10 d-block"></i>
+                        <h4>{{ number_format($totalKunjungan ?? 0) }}</h4>
+                        <p class="m-0 opacity-75">Total Kunjungan</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-c-green text-white total-card shadow-sm">
+                    <div class="card-block p-4 text-center">
+                        <i class="ti-user f-30 m-b-10 d-block"></i>
+                        <h4>{{ number_format($jumlahSiswa ?? 0) }}</h4>
+                        <p class="m-0 opacity-75">Jumlah Siswa</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-c-blue text-white total-card shadow-sm">
+                    <div class="card-block p-4 text-center">
+                        <i class="ti-package f-30 m-b-10 d-block"></i>
+                        <h4>{{ number_format($jumlahObat ?? 0) }}</h4>
+                        <p class="m-0 opacity-75">Stok Obat</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-c-yellow text-white total-card shadow-sm">
+                    <div class="card-block p-4 text-center">
+                        <i class="ti-calendar f-30 m-b-10 d-block"></i>
+                        <h4>{{ number_format($jumlahJadwal ?? 0) }}</h4>
+                        <p class="m-0 opacity-75">Jadwal Pemeriksaan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- GRAFIK --}}
+        @if (auth()->user()->role === 'admin')
+            <div class="row mt-2">
+                {{-- Grafik Kunjungan --}}
+                <div class="col-md-6 mt-4">
+                    <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                        <div class="card-header bg-white border-0 py-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="ti-bar-chart m-r-10 text-primary"></i>Tren Kunjungan
+                            </h5>
                         </div>
-
-                        <!-- Jumlah Siswa -->
-                        <div class="col-md-6">
-                            <div class="card bg-c-green total-card">
-                                <div class="card-block">
-                                    <div class="text-left">
-                                        <h4>{{ $jumlahSiswa }}</h4>
-                                        <p class="m-0">Jumlah Siswa</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Jumlah Obat -->
-                        <div class="col-md-6">
-                            <div class="card bg-c-blue total-card">
-                                <div class="card-block">
-                                    <div class="text-left">
-                                        <h4>{{ $jumlahObat }}</h4>
-                                        <p class="m-0">Jumlah Obat</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-body">
+                            <canvas id="kunjunganChart" height="200"></canvas>
                         </div>
                     </div>
+                </div>
 
-                    @if (isset($labels) && isset($data))
-                        <!-- Grafik Kunjungan -->
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-c-yellow">
-                                        <h5 class="text-dark">Grafik Kunjungan 6 Bulan Terakhir</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="kunjunganChart" height="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                {{-- Grafik Obat --}}
+                <div class="col-md-6 mt-4">
+                    <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                        <div class="card-header bg-white border-0 py-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="ti-stats-up m-r-10 text-success"></i>Pemakaian Obat
+                            </h5>
                         </div>
-                    @endif
-
-                    @if (isset($labelObat) && isset($dataObat))
-                        <!-- Grafik Obat -->
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-c-yellow">
-                                        <h5 class="text-dark">Grafik Pemakaian Obat 6 Bulan Terakhir</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="obatChart" height="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-body">
+                            <canvas id="obatChart" height="200"></canvas>
                         </div>
-                    @endif
-                </div> <!-- /.page-body -->
-            </div> <!-- /.page-wrapper -->
-            <div id="styleSelector"> </div>
-        </div> <!-- /.main-body -->
-    </div> <!-- /.pcoded-inner-content -->
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 @endsection
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    @if (isset($labels) && isset($data))
-        <script>
-            const ctx = document.getElementById('kunjunganChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
+    <script>
+        @if (auth()->user()->role === 'admin' && isset($labels))
+            // Chart Kunjungan
+            const ctxKunjungan = document.getElementById('kunjunganChart').getContext('2d');
+            new Chart(ctxKunjungan, {
+                type: 'line',
                 data: {
-                    labels: @json($labels),
+                    labels: {!! json_encode($labels) !!},
                     datasets: [{
                         label: 'Jumlah Kunjungan',
-                        data: @json($data),
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1,
-                        borderRadius: 10
+                        data: {!! json_encode($data) !!},
+                        borderColor: '#4c9aff',
+                        backgroundColor: 'rgba(76, 154, 255, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3
                     }]
                 },
                 options: {
@@ -131,34 +152,21 @@
                         legend: {
                             display: false
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
                     }
                 }
             });
-        </script>
-    @endif
 
-    @if (isset($labelObat) && isset($dataObat))
-        <script>
+            // Chart Obat
             const ctxObat = document.getElementById('obatChart').getContext('2d');
             new Chart(ctxObat, {
                 type: 'bar',
                 data: {
-                    labels: @json($labelObat),
+                    labels: {!! json_encode($labelObat ?? []) !!},
                     datasets: [{
-                        label: 'Jumlah Pemakaian Obat',
-                        data: @json($dataObat),
-                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1,
-                        borderRadius: 10
+                        label: 'Obat Digunakan',
+                        data: {!! json_encode($dataObat ?? []) !!},
+                        backgroundColor: '#2ed8b6',
+                        borderRadius: 5
                     }]
                 },
                 options: {
@@ -167,17 +175,9 @@
                         legend: {
                             display: false
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
                     }
                 }
             });
-        </script>
-    @endif
+        @endif
+    </script>
 @endpush

@@ -11,11 +11,12 @@ class JadwalPemeriksaan extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
 }

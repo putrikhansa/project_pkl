@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RekamMedisExport;
-use App\Models\Kelas;
 use App\Models\Obat;
 use App\Models\RekamMedis;
 use App\Models\Siswa;
@@ -20,10 +19,15 @@ class RekamMedisController extends Controller
 
     public function create()
     {
-        $kelas = Kelas::all(); 
-        $obat  = Obat::all();  
+        // Ambil semua data siswa beserta kelasnya supaya NIS dan Nama bisa tampil
+        $siswas = \App\Models\Siswa::with('kelas')->orderBy('nama', 'asc')->get();
 
-        return view('backend.rekam_medis.create', compact('kelas', 'obat'));
+        // Ambil juga data kelas dan obat (biasanya dipakai di form yang sama)
+        $kelas = \App\Models\Kelas::all();
+        $obat  = \App\Models\Obat::where('stok', '>', 0)->get();
+
+        // Kirim SEMUA variabel ini ke view
+        return view('backend.rekam_medis.create', compact('siswas', 'kelas', 'obat'));
     }
 
     public function store(Request $request)
@@ -33,31 +37,33 @@ class RekamMedisController extends Controller
             'tanggal'  => 'required|date',
             'keluhan'  => 'required|string',
             'obat_id'  => 'nullable|exists:obats,id',
-            // 'user_id'  => 'required|exists:users,id',
-            'status'   => 'required|string',
+            'status'   => 'required|in:Pulang,Kembali Ke Kelas,Di UKS', // Tambahkan Di UKS di sini
         ]);
 
         $validated['user_id'] = auth()->id();
+        // Memastikan format huruf kapital di awal kata
+        $validated['status'] = ucwords(strtolower($request->status));
 
-        $tindakan = 'Pemeriksaan';
+        $tindakan = "Pemeriksaan";
 
-        // Kurangi stok jika obat dipilih
         if (! empty($validated['obat_id'])) {
             $obat = Obat::find($validated['obat_id']);
-
             if ($obat->stok < 1) {
                 return back()->with('error', 'Stok obat habis.');
             }
-
             $obat->decrement('stok', 1);
             $tindakan .= " dan diberi 1 {$obat->nama_obat}";
         }
 
         $validated['tindakan'] = $tindakan;
 
-        $rekam = RekamMedis::create($validated);
+        // Simpan ke Database
+        $rekam  = RekamMedis::create($validated);
 
-        logAktivitas("Menambahkan rekam medis siswa {$rekam->siswa->nama} pada tanggal {$rekam->tanggal}", 'rekam_medis');
+        // Load relasi siswa agar log tidak error
+        $rekam->load('siswa');
+
+        logAktivitas("Menambahkan rekam medis siswa {$rekam->siswa->nama} dengan status {$rekam->status}", 'rekam_medis');
 
         return redirect()->route('backend.rekam_medis.index')->with('success', 'Data berhasil ditambahkan');
     }
@@ -67,16 +73,18 @@ class RekamMedisController extends Controller
         $rekam_medis = RekamMedis::with('siswa.kelas', 'obat', 'user')->findOrFail($id);
         return view('backend.rekam_medis.show', compact('rekam_medis'));
     }
-
-    public function edit(string $id)
+    public function edit($id)
     {
-        $rekam_medis = RekamMedis::findOrFail($id);
-        $siswa       = Siswa::with('user')->get();
-        $users       = User::all();
-        $obat        = Obat::all();
-        $kelas       = Kelas::all(); 
+        $rekam_medis = RekamMedis::with('siswa.kelas')->findOrFail($id);
+        $siswas      = \App\Models\Siswa::with('kelas')->orderBy('nama', 'asc')->get();
+        $kelas       = \App\Models\Kelas::all();
+        $obat        = \App\Models\Obat::all();
 
-        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswa', 'users', 'obat', 'kelas'));
+        // 1. TAMBAHKAN BARIS INI untuk mengambil data petugas/user
+        $users = User::all();
+
+        // 2. MASUKKAN 'users' ke dalam compact
+        return view('backend.rekam_medis.edit', compact('rekam_medis', 'siswas', 'kelas', 'obat', 'users'));
     }
 
     public function update(Request $request, string $id)
@@ -115,10 +123,13 @@ class RekamMedisController extends Controller
 
     public function getSiswaByKelas($kelas_id)
     {
-        $siswas = Siswa::where('kelas_id', $kelas_id)->get(['id', 'nama']);
-        return response()->json($siswas);
-    }
+        // Cari siswa berdasarkan kelas_id
+        $siswa = \App\Models\Siswa::where('kelas_id', $kelas_id)
+            ->orderBy('nama', 'asc')
+            ->get();
 
+        return response()->json($siswa); // Harus dikirim sebagai JSON
+    }
     public function laporan(Request $request)
     {
         $query = RekamMedis::with('siswa.kelas');

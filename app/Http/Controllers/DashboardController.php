@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\JadwalPemeriksaan;
 use App\Models\Obat;
 use App\Models\RekamMedis;
 use App\Models\Siswa;
@@ -10,13 +11,24 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // CARD UTAMA
         $totalKunjungan = RekamMedis::count();
         $jumlahSiswa    = Siswa::count();
         $jumlahObat     = Obat::count();
+        $jumlahJadwal   = JadwalPemeriksaan::count();
 
-        // Jika login sebagai admin, kirim data grafik juga
+        // DEFAULT (buat petugas)
+        $dataDashboard = compact(
+            'totalKunjungan',
+            'jumlahSiswa',
+            'jumlahObat',
+            'jumlahJadwal'
+        );
+
+        // KHUSUS ADMIN → TAMBAH GRAFIK
         if (auth()->user()->role === 'admin') {
-            // Grafik kunjungan 6 bulan terakhir
+
+            // 🔹 Grafik kunjungan 6 bulan terakhir
             $kunjunganPerBulan = RekamMedis::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
                 ->where('tanggal', '>=', now()->subMonths(6))
                 ->groupBy('bulan')
@@ -25,12 +37,13 @@ class DashboardController extends Controller
 
             $labels = [];
             $data   = [];
+
             foreach ($kunjunganPerBulan as $row) {
                 $labels[] = Carbon::create()->month($row->bulan)->locale('id')->isoFormat('MMMM');
                 $data[]   = $row->total;
             }
 
-            // Grafik pemakaian obat 6 bulan terakhir
+            // 🔹 Grafik pemakaian obat
             $obatTerpakai = RekamMedis::whereNotNull('obat_id')
                 ->selectRaw('obat_id, COUNT(*) as total')
                 ->where('tanggal', '>=', now()->subMonths(6))
@@ -41,10 +54,7 @@ class DashboardController extends Controller
             $labelObat = $obatTerpakai->pluck('obat.nama_obat');
             $dataObat  = $obatTerpakai->pluck('total');
 
-            return view('dashboard.admin', compact(
-                'totalKunjungan',
-                'jumlahSiswa',
-                'jumlahObat',
+            $dataDashboard = array_merge($dataDashboard, compact(
                 'labels',
                 'data',
                 'labelObat',
@@ -52,11 +62,6 @@ class DashboardController extends Controller
             ));
         }
 
-        // Jika bukan admin (misal petugas), kirim data dasar saja
-        return view('dashboard.admin', compact(
-            'totalKunjungan',
-            'jumlahSiswa',
-            'jumlahObat'
-        ));
+        return view('dashboard.admin', $dataDashboard);
     }
 }

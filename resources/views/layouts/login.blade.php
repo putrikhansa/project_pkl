@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="{{ asset('assets/backend/icon/icofont/css/icofont.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/backend/icon/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/backend/css/style.css') }}">
+    <style>
+        .form-control:not(:placeholder-shown)~.float-label,
+        .form-control:focus~.float-label {
+            top: -10px !important;
+            font-size: 12px;
+            opacity: 1;
+        }
+    </style>
 </head>
 
 <body themebg-pattern="theme1">

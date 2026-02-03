@@ -1,97 +1,82 @@
 @extends('layouts.login')
 
 @section('content')
-    <section class="login-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <form method="POST" action="{{ route('login') }}" class="md-float-material form-material">
-                        @csrf
-                        <div class="text-center">
-                            <img src="{{ asset('assets/backend/images/WhatsApp_Image_2025-07-08_at_20.22.56_949ce290-removebg-preview.png') }}" alt="logo.png" width="80">
-                        </div>
-                        <div class="auth-box card">
-                            <div class="card-block">
-                                <div class="row m-b-20">
-                                    <div class="col-md-12">
-                                        <h3 class="text-center">Sign In</h3>
-                                    </div>
-                                </div>
+    <style>
+        body {
+            /* Menggunakan gambar yang sama dengan landing page */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url("{{ asset('assets/frontend/img/assalaam.jpeg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
 
-                                <div class="form-group form-primary">
-                                    <input type="email" name="email"
-                                        class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email') }}" required autofocus>
-                                    <span class="form-bar"></span>
-                                    <label class="float-label">Your Email Address</label>
-                                    @error('email')
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+        .login-card {
+            border-radius: 20px;
+            border: none;
+            /* Efek kaca transparan (Glassmorphism) */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
 
-                                <div class="form-group form-primary">
-                                    <input type="password" name="password"
-                                        class="form-control @error('password') is-invalid @enderror" required>
-                                    <span class="form-bar"></span>
-                                    <label class="float-label">Password</label>
-                                    @error('password')
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+        .btn-login {
+            background: #1977cc;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-                                <div class="row m-t-25 text-left">
-                                    <div class="col-12">
-                                        <div class="checkbox-fade fade-in-primary d-">
-                                            <label>
-                                                <input type="checkbox" name="remember"
-                                                    {{ old('remember') ? 'checked' : '' }}>
-                                                <span class="cr">
-                                                    <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
-                                                </span>
-                                                <span class="text-inverse">Remember me</span>
-                                            </label>
-                                        </div>
-                                        <div class="forgot-phone text-right f-right">
-                                            @if (Route::has('password.request'))
-                                                <a href="{{ route('password.request') }}" class="text-right f-w-600">
-                                                    Forgot Password?
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+        .btn-login:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+        }
 
-                                <div class="row m-t-30">
-                                    <div class="col-md-12">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">
-                                            Sign in
-                                        </button>
-                                    </div>
-                                </div>
+        .brand-title {
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            font-size: 2.5rem;
+        }
+    </style>
 
-                                <hr />
-                                <!-- <div class="row">
-                                    <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Thank you.</p>
-                                        <p class="text-inverse text-left">
-                                            <a href="/" class="f-w-600"><b>Back to website</b></a>
-                                        </p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <img src="{{ asset('assets/backend/images/auth/Logo-small-bottom.png') }}"
-                                            alt="small-logo.png">
-                                    </div>
-                                </div> -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold brand-title">SchoolCare</h2>
+                </div>
+                <div class="card login-card">
+                    <div class="card-body p-4">
+                        <h4 class="text-center mb-4 fw-bold" style="color: #333;">Sign In</h4>
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Email Address</label>
+                                <input type="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror" placeholder="name@example.com"
+                                    required>
                             </div>
-                        </div>
-                    </form>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Password</label>
+                                <input type="password" name="password" class="form-control"
+                                    placeholder="Enter your password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 btn-login mt-2">
+                                Login Sekarang
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 @endsection

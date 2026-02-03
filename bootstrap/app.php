@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-// <-- tetap di atas sini ya
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,11 +10,12 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        // Daftar middleware global (jika ada)
-        // $middleware->append(...);
-
+    ->withMiddleware(function (Middleware $middleware) {
+        // DAFTARKAN ALIAS ADMIN DI SINI
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

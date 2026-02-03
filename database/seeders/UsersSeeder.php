@@ -1,4 +1,4 @@
-<?php
+<?php               
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -22,7 +22,6 @@ class UsersSeeder extends Seeder
             'role'     => 'admin',
         ]);
 
-
-
+        
     }
 }

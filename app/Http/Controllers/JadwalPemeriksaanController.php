@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalPemeriksaan;
-use App\Models\LogAktivitas;
 use App\Models\Kelas;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -12,13 +11,19 @@ class JadwalPemeriksaanController extends Controller
 {
     public function index()
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user'])->latest()->get();
+        // Gunakan with('kelas') agar di view $data->kelas->nama_kelas tidak error/n+1 query
+        // Urutkan berdasarkan tanggal terbaru agar data lebih rapi
+        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['kelas', 'user'])
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
         return view('backend.jadwal_pemeriksaan.index', compact('jadwal_pemeriksaan'));
     }
 
     public function create()
     {
         $kelas = Kelas::all();
+        // Biasanya petugas diambil dari user dengan role tertentu, tapi ini ambil semua dulu
         $users = User::all();
         return view('backend.jadwal_pemeriksaan.create', compact('kelas', 'users'));
     }
@@ -32,14 +37,12 @@ class JadwalPemeriksaanController extends Controller
             'keterangan' => 'nullable|string',
         ]);
 
-        $jadwal = JadwalPemeriksaan::create([
-            'tanggal'    => $request->tanggal,
-            'kelas_id'   => $request->kelas_id,
-            'user_id'    => $request->user_id,
-            'keterangan' => $request->keterangan,
-        ]);
+        $jadwal = JadwalPemeriksaan::create($request->all());
 
-        logAktivitas("Menambahkan jadwal pemeriksaan untuk kelas ID {$jadwal->kelas_id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
+        // Pastikan helper logAktivitas() sudah terdefinisi di helper global kamu
+        if (function_exists('logAktivitas')) {
+            logAktivitas("Menambahkan jadwal pemeriksaan untuk kelas ID {$jadwal->kelas_id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
+        }
 
         return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil disimpan.');
     }
@@ -69,40 +72,39 @@ class JadwalPemeriksaanController extends Controller
         ]);
 
         $jadwal = JadwalPemeriksaan::findOrFail($id);
-        $jadwal->update([
-            'tanggal'    => $request->tanggal,
-            'kelas_id'   => $request->kelas_id,
-            'user_id'    => $request->user_id,
-            'keterangan' => $request->keterangan,
-        ]);
+        $jadwal->update($request->all());
 
-        logAktivitas("Mengedit jadwal pemeriksaan ID {$jadwal->id} pada {$jadwal->tanggal}", 'jadwal_pemeriksaan');
+        if (function_exists('logAktivitas')) {
+            logAktivitas("Mengedit jadwal pemeriksaan ID {$jadwal->id}", 'jadwal_pemeriksaan');
+        }
 
         return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function destroy(string $id)
     {
-        $jadwal  = JadwalPemeriksaan::findOrFail($id);
-        $tanggal = $jadwal->tanggal;
-
+        $jadwal = JadwalPemeriksaan::findOrFail($id);
         $jadwal->delete();
 
-        logAktivitas("Menghapus jadwal pemeriksaan pada {$tanggal}", 'jadwal_pemeriksaan');
+        if (function_exists('logAktivitas')) {
+            logAktivitas("Menghapus jadwal pemeriksaan", 'jadwal_pemeriksaan');
+        }
 
         return redirect()->route('backend.jadwal_pemeriksaan.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 
     public function laporan(Request $request)
     {
-        $awal  = $request->input('tanggal_awal');
-        $akhir = $request->input('tanggal_akhir');
+        $awal  = $request->tanggal_awal;
+        $akhir = $request->tanggal_akhir;
 
-        $jadwal = null;
+        // Inisialisasi koleksi kosong
+        $jadwal = collect([]);
 
         if ($awal && $akhir) {
-            $jadwal = JadwalPemeriksaan::with('kelas')
+            $jadwal = JadwalPemeriksaan::with(['kelas', 'user'])
                 ->whereBetween('tanggal', [$awal, $akhir])
+                ->orderBy('tanggal', 'asc')
                 ->get();
         }
 
@@ -114,6 +116,11 @@ class JadwalPemeriksaanController extends Controller
         $awal  = $request->input('tanggal_awal');
         $akhir = $request->input('tanggal_akhir');
 
+        // Tambahkan validasi jika tanggal kosong sebelum export
+        if (! $awal || ! $akhir) {
+            return back()->with('error', 'Pilih rentang tanggal terlebih dahulu.');
+        }
+
         $jadwal = JadwalPemeriksaan::with(['kelas', 'user'])
             ->whereBetween('tanggal', [$awal, $akhir])
             ->get();
@@ -121,8 +128,6 @@ class JadwalPemeriksaanController extends Controller
         $pdf = Pdf::loadView('backend.jadwal_pemeriksaan.pdf', compact('jadwal', 'awal', 'akhir'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->download('laporan-jadwal-pemeriksaan.pdf');
+        return $pdf->download("laporan-jadwal-$awal-ke-$akhir.pdf");
     }
-
-    
 }
