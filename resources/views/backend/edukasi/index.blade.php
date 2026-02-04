@@ -28,7 +28,7 @@
                             <h5>Daftar Materi Edukasi</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
-                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-wrench open-card-option"></i></li>
                                     <li><i class="fa fa-window-maximize full-card"></i></li>
                                     <li><i class="fa fa-minus minimize-card"></i></li>
                                     <li><i class="fa fa-refresh reload-card"></i></li>
@@ -37,10 +37,11 @@
                         </div>
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover align-middle">
                                     <thead>
                                         <tr>
                                             <th width="5%" class="text-center">No</th>
+                                            <th width="10%">Foto</th>
                                             <th>Judul</th>
                                             <th>Kategori</th>
                                             <th>Penulis</th>
@@ -52,7 +53,23 @@
                                         @forelse ($edukasi as $item)
                                             <tr>
                                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                                <td><strong>{{ $item->judul }}</strong></td>
+                                                <td>
+                                                    @if ($item->foto)
+                                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="Thumbnail"
+                                                            style="width: 70px; height: 50px; object-fit: cover; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                                    @else
+                                                        <div class="text-center bg-light"
+                                                            style="width: 70px; height: 50px; line-height: 50px; border-radius: 5px; font-size: 10px; color: #ccc;">
+                                                            No Image
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <strong>{{ $item->judul }}</strong>
+                                                    <br>
+                                                    <small class="text-muted"><i class="fa fa-calendar"></i>
+                                                        {{ $item->tanggal_publish ? $item->tanggal_publish->format('d M Y') : '-' }}</small>
+                                                </td>
                                                 <td>
                                                     <span
                                                         class="label label-primary">{{ $item->kategori->nama_kategori }}</span>
@@ -63,7 +80,6 @@
                                                         method="POST" id="form-toggle-{{ $item->id }}">
                                                         @csrf
                                                         @method('PATCH')
-
                                                         <label class="switch-custom">
                                                             <input type="checkbox"
                                                                 onchange="document.getElementById('form-toggle-{{ $item->id }}').submit()"
@@ -92,7 +108,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">
+                                                <td colspan="7" class="text-center text-muted">
                                                     <br>
                                                     <i class="fa fa-folder-open fa-3x"></i>
                                                     <p class="m-t-10">Belum ada data edukasi.</p>
@@ -109,78 +125,78 @@
         </div>
     </div>
 @endsection
-<style>
-    /* Container switch */
-    .switch-custom {
-        position: relative;
-        display: inline-block;
-        width: 75px;
-        /* Lebih lebar supaya teks muat */
-        height: 30px;
-    }
 
-    .switch-custom input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
+@push('styles')
+    <style>
+        /* Menyelaraskan vertical align tabel agar konten di tengah */
+        .table td {
+            vertical-align: middle !important;
+        }
 
-    /* Background Slider */
-    .slider-text {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 34px;
-    }
+        /* Container switch */
+        .switch-custom {
+            position: relative;
+            display: inline-block;
+            width: 75px;
+            height: 30px;
+            margin-bottom: 0;
+        }
 
-    /* Bulatan Putih */
-    .slider-text:before {
-        position: absolute;
-        content: "";
-        height: 22px;
-        width: 22px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-        z-index: 2;
-    }
+        .switch-custom input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-    /* Teks Default (Saat OFF / Draft) */
-    .slider-text:after {
-        content: "DRAFT";
-        color: white;
-        display: block;
-        position: absolute;
-        transform: translate(-50%, -50%);
-        top: 50%;
-        left: 60%;
-        /* Posisi teks saat OFF */
-        font-size: 10px;
-        font-family: Arial, sans-serif;
-        font-weight: bold;
-    }
+        .slider-text {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
 
-    /* Saat Status Aktif (Published) */
-    input:checked+.slider-text {
-        background-color: #1977cc;
-    }
+        .slider-text:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            z-index: 2;
+        }
 
-    input:checked+.slider-text:before {
-        transform: translateX(45px);
-        /* Geser bulatannya */
-    }
+        .slider-text:after {
+            content: "DRAFT";
+            color: white;
+            display: block;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 60%;
+            font-size: 10px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
 
-    /* Ganti teks saat ON */
-    input:checked+.slider-text:after {
-        content: "PUB";
-        left: 35%;
-        /* Geser teks ke kiri supaya tidak tabrakan sama bulatan */
-    }
-</style>
+        input:checked+.slider-text {
+            background-color: #1977cc;
+        }
+
+        input:checked+.slider-text:before {
+            transform: translateX(45px);
+        }
+
+        input:checked+.slider-text:after {
+            content: "PUB";
+            left: 35%;
+        }
+    </style>
+@endpush

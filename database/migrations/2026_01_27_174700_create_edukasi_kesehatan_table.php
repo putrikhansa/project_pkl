@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->text('isi');
+            $table->string('foto')->nullable(); // <-- Tambahkan ini untuk menyimpan path foto
             $table->foreignId('kategori_id')->constrained('kategori_edukasi')->cascadeOnDelete();
             $table->foreignId('penulis_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['draft', 'publish'])->default('draft');
             $table->date('tanggal_publish')->nullable();
             $table->timestamps();
         });
-
     }
 
     /**

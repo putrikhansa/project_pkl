@@ -522,19 +522,33 @@
                 <div class="row gy-4">
                     @forelse ($edukasi as $item)
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                            <div class="edukasi-card h-100 shadow-sm border-0">
-                                <div class="edukasi-icon">
-                                    <i class="bi bi-heart-pulse-fill"></i>
-                                </div>
-                                <div class="edukasi-body">
-                                    <h3>{{ $item->judul }}</h3>
-                                    <span
-                                        class="badge bg-info mb-2">{{ $item->kategori->nama_kategori ?? 'Umum' }}</span>
-                                    <div class="edukasi-text">
-                                        {!! nl2br(e(Str::limit($item->isi, 150))) !!}
+                            <div class="edukasi-card h-100 shadow-sm border-0 bg-white rounded overflow-hidden">
+                                <div class="edukasi-img-container"
+                                    style="height: 200px; overflow: hidden; position: relative;">
+                                    @if ($item->foto)
+                                        <img src="{{ asset('storage/' . $item->foto) }}"
+                                            class="img-fluid w-100 h-100" style="object-fit: cover;"
+                                            alt="{{ $item->judul }}">
+                                    @else
+                                        <div
+                                            class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                                            <i class="bi bi-image" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @endif
+                                    <div class="edukasi-badge-kategori"
+                                        style="position: absolute; top: 15px; left: 15px;">
+                                        <span
+                                            class="badge bg-primary px-3 py-2 shadow-sm">{{ $item->kategori->nama_kategori ?? 'Umum' }}</span>
                                     </div>
-                                    <a href="#" class="read-more mt-3 d-inline-block" data-bs-toggle="modal"
-                                        data-bs-target="#modalEdukasi{{ $item->id }}">
+                                </div>
+
+                                <div class="edukasi-body p-4">
+                                    <h3 class="fw-bold h5 mb-3">{{ $item->judul }}</h3>
+                                    <div class="edukasi-text text-muted mb-3" style="font-size: 14px;">
+                                        {!! nl2br(e(Str::limit($item->isi, 120))) !!}
+                                    </div>
+                                    <a href="#" class="read-more text-decoration-none fw-bold"
+                                        data-bs-toggle="modal" data-bs-target="#modalEdukasi{{ $item->id }}">
                                         Baca Selengkapnya <i class="bi bi-arrow-right"></i>
                                     </a>
                                 </div>
@@ -546,28 +560,32 @@
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content border-0 shadow-lg">
                                     <div class="modal-header bg-primary text-white p-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-box-modal me-3">
-                                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                            </div>
-                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">
-                                                {{ $item->judul }}</h5>
-                                        </div>
+                                        <h5 class="modal-title fw-bold">{{ $item->judul }}</h5>
                                         <button type="button" class="btn-close btn-close-white"
                                             data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body p-5">
-                                        <div class="mb-4 d-flex align-items-center text-muted small">
-                                            <span
-                                                class="badge bg-light text-primary border me-2">{{ $item->kategori->nama_kategori ?? 'Umum' }}</span>
-                                            <span class="me-2">|</span>
-                                            <i class="bi bi-calendar-event me-1"></i>
-                                            {{ $item->tanggal_publish ? \Carbon\Carbon::parse($item->tanggal_publish)->format('d M Y') : '-' }}
-                                        </div>
+                                    <div class="modal-body p-0">
+                                        @if ($item->foto)
+                                            <img src="{{ asset('storage/' . $item->foto) }}" class="img-fluid w-100"
+                                                style="max-height: 400px; object-fit: cover;"
+                                                alt="{{ $item->judul }}">
+                                        @endif
 
-                                        <div class="content-edukasi"
-                                            style="font-size: 16px; line-height: 1.8; color: #444;">
-                                            {!! nl2br(e($item->isi)) !!}
+                                        <div class="p-5">
+                                            <div class="mb-4 d-flex align-items-center text-muted small">
+                                                <span
+                                                    class="badge bg-light text-primary border me-2">{{ $item->kategori->nama_kategori ?? 'Umum' }}</span>
+                                                <span class="me-2">|</span>
+                                                <i class="bi bi-person me-1"></i> {{ $item->penulis->name }}
+                                                <span class="mx-2">|</span>
+                                                <i class="bi bi-calendar-event me-1"></i>
+                                                {{ $item->tanggal_publish ? $item->tanggal_publish->format('d M Y') : '-' }}
+                                            </div>
+
+                                            <div class="content-edukasi"
+                                                style="font-size: 16px; line-height: 1.8; color: #444; text-align: justify;">
+                                                {!! nl2br(e($item->isi)) !!}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer border-0 p-4">
@@ -579,14 +597,42 @@
                         </div>
 
                     @empty
-                        <div class="col-12 text-center">
-                            <div class="alert alert-info">Belum ada edukasi kesehatan tersedia.</div>
+                        <div class="col-12 text-center" data-aos="fade-up">
+                            <div class="alert alert-info py-4">
+                                <i class="bi bi-info-circle fs-2 d-block mb-2"></i>
+                                Belum ada materi edukasi kesehatan yang dipublikasikan.
+                            </div>
                         </div>
                     @endforelse
                 </div>
             </div>
         </section>
 
+        <style>
+            .edukasi-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .edukasi-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .read-more {
+                color: #1977cc;
+                transition: 0.3s;
+            }
+
+            .read-more:hover {
+                color: #125592;
+                letter-spacing: 0.5px;
+            }
+
+            .content-edukasi {
+                white-space: pre-line;
+                /* Menjaga spasi antar paragraf tetap rapi */
+            }
+        </style>
         <!-- /Faq Section -->
 
         <!-- Testimonials Section -->

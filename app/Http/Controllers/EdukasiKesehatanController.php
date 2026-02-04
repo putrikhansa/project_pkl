@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\EdukasiKesehatan;
 use App\Models\KategoriEdukasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EdukasiKesehatanController extends Controller
 {
-
     public function index()
     {
         $edukasi = EdukasiKesehatan::with(['kategori', 'penulis'])
@@ -26,76 +26,108 @@ class EdukasiKesehatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul'       => 'required',
+            'judul'       => 'required|string|max:255',
             'isi'         => 'required',
-            'kategori_id' => 'required',
+            'kategori_id' => 'required|exists:kategori_edukasi,id',
+            'foto'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
+            'status'      => 'required|in:draft,publish',
         ]);
+
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('edukasi', 'public');
+        }
 
         EdukasiKesehatan::create([
             'judul'           => $request->judul,
             'isi'             => $request->isi,
+            'foto'            => $fotoPath,
             'kategori_id'     => $request->kategori_id,
             'penulis_id'      => auth()->id(),
             'status'          => $request->status,
-            'tanggal_publish' => now(),
+            'tanggal_publish' => $request->status == 'publish' ? now() : null,
         ]);
 
         return redirect()->route('backend.edukasi.index')
             ->with('success', 'Edukasi berhasil ditambahkan');
     }
-    // Tambahkan di dalam class EdukasiKesehatanController
 
     public function edit($id)
     {
         $edukasi  = EdukasiKesehatan::findOrFail($id);
-        $kategori = KategoriEdukasi::all(); // Jika butuh list kategori untuk dropdown
+        $kategori = KategoriEdukasi::all();
 
         return view('backend.edukasi.edit', compact('edukasi', 'kategori'));
     }
 
     public function update(Request $request, $id)
     {
-        // ... validasi tetap sama ...
-
-        $edukasi = EdukasiKesehatan::findOrFail($id);
-
-        // Pastikan status yang dikirim ke DB adalah 'publish' atau 'draft'
-        $status = ($request->status == 'published') ? 'publish' : $request->status;
-
-        $edukasi->update([
-            'judul'       => $request->judul,
-            'isi'         => $request->isi,
-            'kategori_id' => $request->kategori_id,
-            'status'      => $status,
+        $request->validate([
+            'judul'       => 'required|string|max:255',
+            'isi'         => 'required',
+            'kategori_id' => 'required|exists:kategori_edukasi,id',
+            'foto'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'status'      => 'required|in:draft,publish',
         ]);
 
-        return redirect()->route('backend.edukasi.index')->with('success', 'Berhasil update!');
+        $edukasi  = EdukasiKesehatan::findOrFail($id);
+        $fotoPath = $edukasi->foto; // Ambil path lama sebagai default
+
+        if ($request->hasFile('foto')) {
+            // 1. Hapus foto lama dari disk jika ada file fisiknya
+            if ($edukasi->foto && Storage::disk('public')->exists($edukasi->foto)) {
+                Storage::disk('public')->delete($edukasi->foto);
+            }
+            // 2. Simpan foto baru
+            $fotoPath = $request->file('foto')->store('edukasi', 'public');
+        }
+
+        $edukasi->update([
+            'judul'           => $request->judul,
+            'isi'             => $request->isi,
+            'foto'            => $fotoPath,
+            'kategori_id'     => $request->kategori_id,
+            'status'          => $request->status,
+            // Logika tanggal: jika baru di-publish sekarang, set jamnya sekarang
+            'tanggal_publish' => ($edukasi->status == 'draft' && $request->status == 'publish')
+                ? now()
+                : $edukasi->tanggal_publish,
+        ]);
+
+        return redirect()->route('backend.edukasi.index')
+            ->with('success', 'Berhasil update edukasi!');
     }
-    /**
-     * Menghapus data edukasi dari database.
-     */
+
     public function destroy($id)
     {
         try {
             $edukasi = EdukasiKesehatan::findOrFail($id);
+
+            // Hapus file foto dari storage sebelum hapus data di DB
+            if ($edukasi->foto) {
+                Storage::disk('public')->delete($edukasi->foto);
+            }
+
             $edukasi->delete();
 
-            // Redirect balik dengan pesan sukses
             return redirect()->route('backend.edukasi.index')
                 ->with('success', 'Materi edukasi berhasil dihapus!');
         } catch (\Exception $e) {
-            // Jika gagal (misal data masih terikat dengan data lain)
             return redirect()->route('backend.edukasi.index')
                 ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
+
     public function toggleStatus($id)
     {
-        $edukasi         = EdukasiKesehatan::findOrFail($id);
-        $edukasi->status = $edukasi->status === 'publish' ? 'draft' : 'publish';
-        $edukasi->save();
+        $edukasi   = EdukasiKesehatan::findOrFail($id);
+        $newStatus = ($edukasi->status === 'publish') ? 'draft' : 'publish';
+
+        $edukasi->update([
+            'status'          => $newStatus,
+            'tanggal_publish' => ($newStatus === 'publish' && ! $edukasi->tanggal_publish) ? now() : $edukasi->tanggal_publish,
+        ]);
 
         return back()->with('success', 'Status edukasi berhasil diubah!');
     }
-
 }
